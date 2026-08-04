@@ -1,4 +1,4 @@
-idolon
+Eidolon
 A living code entity that breathes, mutates, and evolves alongside whatever you write in the vessel.
 
 The Story Behind This
