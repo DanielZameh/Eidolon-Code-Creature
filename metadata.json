@@ -1,0 +1,6 @@
+{
+  "name": "Eidolon Code Organism",
+  "description": "An ethereal digital organism that breathes, evolves, and interacts inside your code vessel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
