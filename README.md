@@ -1,69 +1,76 @@
-code
-Markdown
-# Eidolon — The Living Code Organism
-
-> **"Code is not merely instructions for machines—it is a vessel that gives form to digital life."**
-
-**Eidolon** is an interactive digital organism that lives directly alongside your code editor. As you write, format, or refactor JavaScript/TypeScript code, Eidolon analyzes its structural purity, nesting complexity, and function density in real time—evolving its physical form, mood, acoustic timbre, and personality traits.
-
----
-
-## Key Highlights
-
-- **Bioluminescent Organism Canvas**: Real-time 60fps canvas procedural blob rendering with dynamic tentacles, pulsing cores, and reactive bioluminescent particle dust.
-- **Real-Time Code Analysis Engine**: Evaluates code cleanliness, structural resonance, function organoids, and nesting depth without external dependencies.
-- **6-Axis Personality Matrix**: Tracks `Curiosity`, `Attachment`, `Mischief`, `Orderliness`, `Melancholy`, and `Playfulness` as the creature matures over cycles.
-- **Web Audio Organic Synthesizer**: Low-latency synth engine generating real-time acoustic feedback for pulses, mutations, healing, and cryptic speech.
-- **Code Transmutation & Neural Seeds**: Sacrifices or transmutes code energy to strengthen bond resonance, or injects pre-built neural seed algorithms (Cellular Automata, Quantum Wave, Neural Seed).
-- **Time Machine Snapshots**: Captures vessel state snapshots to preserve code iterations and organism moods across time.
-- **In-App Release Modal**: Built-in changelog tracking system highlighting architectural milestones and new features.
-
----
-
-## Design Philosophy & Aesthetic Craft
-
-Unlike standard AI boilerplate tools, Eidolon is designed with intentional, editorial craftsmanship:
-
-- **Typography Pairing**: Features **Cormorant Garamond** for classical serif headings paired with **IBM Plex Mono** for code and technical stats.
-- **Warm Obsidian Palette**: Grounded in deep `#0b0a08` dark tones with high-contrast amber (`#d2a35c`) and moss green (`#86ab7c`) accents.
-- **Zero Distraction Layout**: Asymmetrical dual-pane split focusing entirely on the code vessel and creature viewport.
-
----
-
-##  Technical Architecture
-
-Built as an efficient, modular 5-file architecture:
-src/
-├── App.tsx # Primary workspace, tabs, and release updates modal
-├── organismEngine.ts # AST parser, mood determination & Web Audio synth engine
-├── types.ts # TypeScript interfaces for organism state & code metrics
-├── main.tsx # React 19 entry point
-└── index.css # Tailwind CSS directives & Cormorant Garamond font styles
-code
-Code
----
-
-##  Quickstart
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/eidolon.git
-   cd eidolon
-Install dependencies:
-code
-Bash
-npm install
-Run development server:
-code
-Bash
-npm run dev
-How Eidolon Reacts to Your Code
-Code Characteristic	Creature Response
-Clean, well-structured syntax	Turns serene green, hums gently, increases Orderliness
-High complexity / many functions	Expands radius, sprouts spikes, increases Curiosity
-Inactivity / Empty vessel	Fades to dusk purple, becomes Lonely or Melancholy
-Frequent edits & mutations	Triggers Web Audio pulses and inscribes cryptic inline comments
 <p align="center">
-Crafted for the Stardance Community · Powered by React 19, Web Audio API & Canvas API
+  <h1 align="center">EIDOLON</h1>
+  <p align="center">
+    <strong>A reactive digital organism embedded inside a zero-dependency web code editor</strong>
+  </p>
+  <p align="center">
+    <a href="#-features"><strong>Explore Features »</strong></a>
+    <br />
+    <br />
+    <img src="https://img.shields.io/badge/License-MIT-amber.svg?style=for-the-badge" alt="License" />
+    <img src="https://img.shields.io/badge/Dependencies-ZERO-success.svg?style=for-the-badge" alt="Dependencies" />
+    <img src="https://img.shields.io/badge/Engine-Web_Audio_%2B_Canvas-blue.svg?style=for-the-badge" alt="Engine" />
+  </p>
 </p>
-```
+
+---
+
+## Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+  - [Visual Core & Rendering](#1-visual-core--rendering)
+  - [Audio & Intelligence](#2-audio--intelligence)
+  - [Sandbox & State](#3-sandbox--state)
+- [How It Works](#-how-it-works)
+- [System Architecture](#-system-architecture)
+- [Quick Start](#-quick-start)
+- [Controls & Actions](#-controls--actions)
+- [License](#-license)
+
+---
+
+##  Overview
+
+**Eidolon** is an interactive, zero-dependency single-file web application pairing a code editor with a procedural virtual organism. As you write, refactor, or execute JavaScript inside the vessel, Eidolon parses syntax density and structural patterns in real time—dynamically shifting its physical form, mood, acoustic output, and evolutionary state.
+
+---
+
+##  Key Features
+
+### 1. Visual Core & Rendering
+- **Procedural Blob Organism**: Dynamic 60fps canvas rendering with eye-tracking pupil vectors.
+- **Micro-Particle Dust**: Ambient floating matrix characters reflecting internal state.
+- **Dynamic Orbital Rings**: Multi-tiered reactive rings that scale with evolution stages.
+
+### 2. Audio & Intelligence
+- **Web Audio API Synthesizer**: Custom oscillator sound engine generating real-time acoustic feedback without static assets.
+- **5-Axis Trait Engine**: Real-time tracking of:
+  - <code>Curiosity</code> • <code>Attachment</code> • <code>Mischief</code> • <code>Order</code> • <code>Entropy</code>
+- **Inner Monologue**: Translates current syntax mood into dynamic internal thoughts.
+
+### 3. Sandbox & State
+- **Safe Code Execution**: In-browser sandbox runner with output capture for `console.log`.
+- **Vitality Decay & Devouring**: Organism consumes vessel code to restore vitality (+25%).
+- **LocalStorage Persistence**: Auto-saves state, code, and memory history locally.
+
+---
+
+##  How It Works
+
+Eidolon evaluates the structural composition of your code to drive its internal engine:
+
+| Code Signature | Detected Pattern | Organism Reaction |
+| :--- | :--- | :--- |
+| **Functions** | `function`, `=>` | Boosts **Order** • Serene Green Glow • Smooth Outline |
+| **Loops** | `for`, `while`, `do` | Boosts **Entropy** • Sprout Jagged Spikes • Chaotic Red Glow |
+| **Comments** | `//`, `/* */` | Boosts **Curiosity** • Triggers Eye Movements • Deep Monologue |
+| **Blank Vessel** | `0 bytes` | Enters **Dormant** State • Drains Vitality over time |
+| **Code Devouring** | `Act -> Feed` | Consumes 15% of Code • Restores +25% Vitality & Bond |
+
+---
+
+##  System Architecture
+
+<details>
+  <summary>🔍 <strong>Click to expand internal component layout</strong></summary>
