@@ -3,273 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eidolon Interface - Advanced Cybernetic Organism</title>
+<title>Workshop — Code Preview</title>
 <style>
 * { box-sizing: border-box; }
+:root{
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --muted: #6b7280;
+  --text: #111827;
+  --accent: #2563eb;
+  --success: #059669;
+  --danger: #ef4444;
+  --border: #e6e7eb;
+}
+html,body{height:100%;}
 body {
   margin: 0;
-  background: #111;
-  color: #ccc;
-  font-family: monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  user-select: none;
+  -webkit-font-smoothing:antialiased;
 }
 header {
-  background: #1a1a1a;
-  border-bottom: 2px solid #333;
-  padding: 8px 15px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.03);
 }
 header h1 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   margin: 0;
-  color: #fff;
+  color: var(--text);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .header-actions {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
 }
 .btn {
-  background: #222;
-  border: 1px solid #444;
-  color: #ccc;
-  padding: 5px 10px;
-  font-family: monospace;
-  font-size: 0.8rem;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.12s ease;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+  border-radius: 6px;
 }
-.btn:hover {
-  background: #333;
-  color: #fff;
-  border-color: #666;
-}
-.btn:active {
-  transform: translateY(1px);
-}
-.btn-sm {
-  padding: 3px 6px;
-  font-size: 0.75rem;
-}
-.select-input {
-  background: #222;
-  border: 1px solid #444;
-  color: #ccc;
-  padding: 5px;
-  font-family: monospace;
-  font-size: 0.8rem;
-  outline: none;
-}
-.main-container {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-.editor-pane {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border-right: 2px solid #333;
-  position: relative;
-}
-.toolbar {
-  background: #151515;
-  padding: 5px 10px;
-  border-bottom: 1px solid #333;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-#code {
-  flex: 1;
-  background: #0d0d0d;
-  color: #ddd;
-  border: none;
-  padding: 15px;
-  font-family: monospace;
-  font-size: 13px;
-  resize: none;
-  outline: none;
-  line-height: 1.6;
-  tab-size: 2;
-  white-space: pre;
-}
-.side-pane {
-  width: 360px;
-  background: #151515;
-  display: flex;
-  flex-direction: column;
-}
-.tabs {
-  display: flex;
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
-}
-.tab {
-  flex: 1;
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 0.75rem;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  color: #888;
-  transition: 0.2s;
-}
-.tab:hover {
-  color: #ccc;
-}
-.tab.active {
-  border-bottom-color: #7a9e7a;
-  color: #fff;
-  background: #222;
-}
-.tab-pane {
-  display: none;
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-}
-.tab-pane.active {
-  display: block;
-}
-.canvas-box {
-  height: 220px;
-  background: radial-gradient(circle at center, #181c18 0%, #050505 100%);
-  border: 1px solid #333;
-  margin-bottom: 12px;
-  position: relative;
-  overflow: hidden;
-  cursor: crosshair;
-}
-#creature-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.canvas-hint {
-  position: absolute;
-  bottom: 4px;
-  right: 6px;
-  font-size: 0.65rem;
-  color: #555;
-  pointer-events: none;
-}
-.stats-box div {
-  margin-bottom: 4px;
-  font-size: 0.8rem;
-  display: flex;
-  justify-content: space-between;
-}
-.stats-box span {
-  color: #fff;
-}
-.progress-bar-bg {
-  width: 100px;
-  background: #222;
-  height: 6px;
-  border: 1px solid #444;
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 8px;
-}
-.progress-bar-fill {
-  background: #7a9e7a;
-  height: 100%;
-  width: 0%;
-  transition: width 0.3s;
-}
-.log-box {
-  height: 150px;
-  background: #080808;
-  border-top: 2px solid #333;
-  padding: 8px 12px;
-  overflow-y: auto;
-  font-size: 0.78rem;
-  line-height: 1.4;
-}
-.mem-item {
-  background: #111;
-  border-left: 2px solid #555;
-  padding: 6px 8px;
-  margin-bottom: 6px;
-  font-size: 0.78rem;
-}
-.trait-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 0.78rem;
-}
-.trait-bar-bg {
-  width: 120px;
-  background: #222;
-  height: 8px;
-  border: 1px solid #444;
-}
-.trait-bar-fill {
-  background: #7a9e7a;
-  height: 100%;
-  transition: width 0.3s;
-}
-.badge {
-  background: #252525;
-  border: 1px solid #444;
-  padding: 2px 6px;
-  font-size: 0.7rem;
-  color: #aaa;
-  border-radius: 2px;
-}
-.action-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.action-grid .btn {
-  width: 100%;
-  justify-content: center;
-}
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #111;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+.btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px rgba(15,23,42,0.04); }
+.btn:active{ transform: translateY(0); }
+.btn-sm{ padding:6px 9px; font-size:0.85rem; }
+.select-input{ background: #fff; border:1px solid var(--border); padding:6px 8px; border-radius:6px; font-family:inherit; }
+.main-container{ display:flex; flex:1; overflow:hidden; }
+.editor-pane{ flex:1; display:flex; flex-direction:column; border-right:1px solid var(--border); background: linear-gradient(180deg,#fbfdff 0%, #ffffff 100%); }
+.toolbar{ background: transparent; padding:10px 14px; border-bottom:1px solid transparent; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+#code{ flex:1; background: #0f1724; color: #e6eef8; border: none; padding: 18px; font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:13px; resize:none; outline:none; line-height:1.6; tab-size:2; }
+.code-footer{ background:var(--panel); padding:8px 14px; font-size:0.9rem; color:var(--muted); border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.side-pane{ width:360px; background: var(--panel); display:flex; flex-direction:column; }
+.tabs{ display:flex; background: transparent; border-bottom:1px solid var(--border); }
+.tab{ flex:1; padding:10px 8px; text-align:center; font-size:0.9rem; cursor:pointer; color:var(--muted); border-bottom:3px solid transparent; }
+.tab.active{ border-bottom-color:var(--accent); color:var(--text); font-weight:600; }
+.tab-pane{ display:none; flex:1; padding:14px; overflow-y:auto; }
+.tab-pane.active{ display:block; }
+.canvas-box{ height:220px; background: linear-gradient(180deg,#f8fafc,#eef2ff); border:1px solid var(--border); margin-bottom:12px; position:relative; overflow:hidden; border-radius:8px; }
+#creature-canvas{ width:100%; height:100%; display:block; }
+.canvas-hint{ position:absolute; bottom:8px; right:10px; font-size:0.8rem; color:var(--muted); pointer-events:none; }
+.stats-box div{ margin-bottom:8px; font-size:0.95rem; display:flex; justify-content:space-between; }
+.stats-box span{ color:var(--text); }
+.progress-bar-bg{ width:120px; background:#f1f5f9; height:8px; border:1px solid var(--border); display:inline-block; vertical-align:middle; margin-left:8px; border-radius:6px; overflow:hidden; }
+.progress-bar-fill{ background:var(--success); height:100%; width:0%; transition:width 0.25s; }
+.log-box{ height:150px; background:#0b1220; color:#e6eef8; border-top:1px solid var(--border); padding:10px 14px; overflow-y:auto; font-size:0.9rem; line-height:1.4; }
+.mem-item{ background:#f8fafc; border-left:3px solid var(--border); padding:8px 10px; margin-bottom:8px; font-size:0.9rem; border-radius:6px; }
+.trait-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:0.95rem; }
+.trait-bar-bg{ width:140px; background:#f1f5f9; height:10px; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.trait-bar-fill{ background:var(--accent); height:100%; transition:width 0.2s; }
+.badge{ background:#f1f5f9; border:1px solid var(--border); padding:4px 8px; font-size:0.8rem; color:var(--muted); border-radius:999px; }
+.action-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.action-grid .btn{ width:100%; justify-content:center; }
+::-webkit-scrollbar{ width:8px; height:8px; }
+::-webkit-scrollbar-track{ background:transparent; }
+::-webkit-scrollbar-thumb{ background:#d1d5db; border-radius:6px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <div id="ind" style="width:12px;height:12px;border-radius:50%;background:#555;transition:background 0.3s;"></div>
-    <h1>Eidolon: <span id="cname">Unformed</span> <span id="stage-badge" class="badge">Stage 0</span></h1>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="ind" style="width:14px;height:14px;border-radius:50%;background:#cbd5e1;transition:background 0.3s;"></div>
+    <h1>Workshop — <span id="cname">Unnamed Project</span> <span id="stage-badge" class="badge">Stage 0</span></h1>
   </div>
   <div class="header-actions">
-    <button class="btn" id="btn-audio" title="Toggle Synthesizer Sound Engine">🔊 Audio</button>
+    <button class="btn" id="btn-audio" title="Toggle sound">🔈 Sound</button>
     <button class="btn" id="btn-analyze">Analyze</button>
-    <button class="btn" id="btn-evolve">Evolve</button>
-    <button class="btn" id="btn-speak">Listen</button>
-    <button class="btn" id="btn-save" title="Save Entity State">Save</button>
+    <button class="btn" id="btn-evolve">Refine</button>
+    <button class="btn" id="btn-speak">Announce</button>
+    <button class="btn" id="btn-save" title="Save state">Save</button>
     <button class="btn" id="btn-reset">Reset</button>
   </div>
 </header>
@@ -277,73 +119,71 @@ header h1 {
 <div class="main-container">
   <div class="editor-pane">
     <div class="toolbar">
-      <button class="btn btn-sm" id="btn-run" style="border-color:#5a8e5a;color:#7a9e7a;">▶ Run Sandbox</button>
+      <button class="btn btn-sm" id="btn-run" style="border-color:var(--accent);color:var(--accent);">▶ Run</button>
       <select class="select-input" id="preset-select">
-        <option value="" disabled selected>Load Preset Code...</option>
-        <option value="spark">Organic Seed</option>
-        <option value="neural">Neural Network Mesh</option>
-        <option value="entropy">Entropy Matrix</option>
-        <option value="cipher">Cipher Generator</option>
+        <option value="" disabled selected>Load sample code…</option>
+        <option value="spark">Seed example</option>
+        <option value="neural">Neural mesh</option>
+        <option value="entropy">Entropy demo</option>
+        <option value="cipher">Simple cipher</option>
       </select>
-      <button class="btn btn-sm" id="btn-format">Clean</button>
+      <button class="btn btn-sm" id="btn-format">Format</button>
       <button class="btn btn-sm" id="btn-clear">Clear</button>
-      <span id="pos" style="margin-left:auto;font-size:0.75rem;color:#777;align-self:center;">Ln 1, Col 1</span>
+      <span id="pos" style="margin-left:auto;font-size:0.9rem;color:var(--muted);align-self:center;">Ln 1, Col 1</span>
     </div>
-    <textarea id="code" spellcheck="false" placeholder="// Type JavaScript here to feed and shape Eidolon..."></textarea>
-    <div style="background:#1a1a1a;padding:4px 10px;font-size:0.75rem;border-top:1px solid #333;color:#888;display:flex;justify-content:space-between;" id="code-health">
+    <textarea id="code" spellcheck="false" placeholder="// Type JavaScript here to test, refactor, and iterate..."></textarea>
+    <div class="code-footer" id="code-health">
       <span>structure: unknown</span>
-      <span>tokens: 0 | health: 100%</span>
+      <span>characters: 0 | health: 100%</span>
     </div>
   </div>
 
   <div class="side-pane">
     <div class="tabs">
-      <div class="tab active" data-t="being">Being</div>
-      <div class="tab" data-t="mind">Mind</div>
-      <div class="tab" data-t="genome">Genome</div>
+      <div class="tab active" data-t="being">Overview</div>
+      <div class="tab" data-t="mind">Notes</div>
+      <div class="tab" data-t="genome">Code Map</div>
       <div class="tab" data-t="memory">Memory</div>
-      <div class="tab" data-t="actions">Act</div>
+      <div class="tab" data-t="actions">Actions</div>
     </div>
 
-    <!-- BEING TAB -->
+    <!-- OVERVIEW TAB -->
     <div class="tab-pane active" id="pane-being">
       <div class="canvas-box">
         <canvas id="creature-canvas"></canvas>
-        <div class="canvas-hint">Click canvas to interact</div>
+        <div class="canvas-hint">Click to interact</div>
       </div>
       <div class="stats-box">
-        <div>Name: <span id="s-name">Unformed</span></div>
-        <div>Mood: <span id="s-mood">dormant</span></div>
-        <div>Stage: <span id="s-stage">Primer</span></div>
-        <div>Age: <span id="s-age">0 cycles</span></div>
-        <div>Vitality: <span><span id="s-vit-val">100</span>% <div class="progress-bar-bg"><div id="s-vit-bar" class="progress-bar-fill"></div></div></span></div>
-        <div>Bond: <span><span id="s-bond-val">0</span>% <div class="progress-bar-bg"><div id="s-bond-bar" class="progress-bar-fill"></div></div></span></div>
+        <div>Name: <span id="s-name">Unnamed Project</span></div>
+        <div>Status: <span id="s-mood">idle</span></div>
+        <div>Stage: <span id="s-stage">Initial</span></div>
+        <div>Uptime: <span id="s-age">0 cycles</span></div>
+        <div>Health: <span><span id="s-vit-val">100</span>% <div class="progress-bar-bg"><div id="s-vit-bar" class="progress-bar-fill"></div></div></span></div>
+        <div>Connection: <span><span id="s-bond-val">0</span>% <div class="progress-bar-bg"><div id="s-bond-bar" class="progress-bar-fill"></div></div></span></div>
         <div>Complexity: <span id="s-cpl">0</span></div>
-        <div>Mutations: <span id="s-mut">0</span></div>
+        <div>Changes: <span id="s-mut">0</span></div>
       </div>
     </div>
 
-    <!-- MIND TAB -->
+    <!-- NOTES TAB -->
     <div class="tab-pane" id="pane-mind">
       <div id="mind-list"></div>
-      <div style="margin-top:15px;border-top:1px solid #333;padding-top:10px;">
-        <div style="font-size:0.8rem;color:#aaa;margin-bottom:5px;">Inner Monologue:</div>
-        <div id="mind-thought" style="font-size:0.75rem;font-style:italic;color:#7a8a9e;background:#0d0d0d;padding:8px;border:1px solid #222;min-height:50px;">
-          "Observing silence..."
-        </div>
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;">
+        <div style="font-size:0.9rem;color:var(--muted);margin-bottom:6px;">Quick note:</div>
+        <div id="mind-thought" style="font-size:0.9rem;color:var(--text);background:#f8fafc;padding:10px;border:1px solid var(--border);min-height:60px;border-radius:8px;">"Awaiting code input..."</div>
       </div>
     </div>
 
-    <!-- GENOME TAB -->
+    <!-- CODE MAP TAB -->
     <div class="tab-pane" id="pane-genome">
-      <div style="font-size:0.8rem;color:#888;margin-bottom:10px;">Genome Expressions & Capabilities</div>
-      <div id="genome-nodes" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div style="font-size:0.9rem;color:var(--muted);margin-bottom:10px;">Detected features & advice</div>
+      <div id="genome-nodes" style="display:flex;flex-direction:column;gap:8px;"></div>
     </div>
 
     <!-- MEMORY TAB -->
     <div class="tab-pane" id="pane-memory">
-      <div style="display:flex;gap:5px;margin-bottom:8px;">
-        <input type="text" id="mem-search" placeholder="Search memory..." style="flex:1;background:#0d0d0d;border:1px solid #333;color:#ccc;padding:4px;font-family:monospace;font-size:0.75rem;">
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="text" id="mem-search" placeholder="Search history…" style="flex:1;background:#fff;border:1px solid var(--border);color:var(--text);padding:8px;border-radius:8px;font-family:inherit;font-size:0.9rem;">
         <button class="btn btn-sm" id="btn-clear-mem">Clear</button>
       </div>
       <div id="mem-list"></div>
@@ -351,16 +191,16 @@ header h1 {
 
     <!-- ACTIONS TAB -->
     <div class="tab-pane" id="pane-actions">
-      <p style="font-size:0.75rem;color:#888;margin-top:0;margin-bottom:10px;">Direct entity intervention on vessel source code.</p>
+      <p style="font-size:0.9rem;color:var(--muted);margin-top:0;margin-bottom:12px;">One-click helpers for common edits.</p>
       <div class="action-grid">
-        <button class="btn" id="act-mark">Leave Mark</button>
-        <button class="btn" id="act-reshape">Reshape</button>
-        <button class="btn" id="act-grow">Grow Fn</button>
-        <button class="btn" id="act-tidy">Devour WS</button>
-        <button class="btn" id="act-mutate-var">Mutate Vars</button>
-        <button class="btn" id="act-cipher">Inject Cipher</button>
-        <button class="btn" id="act-feed">Feed Code</button>
-        <button class="btn" id="act-harmonize">Harmonize</button>
+        <button class="btn" id="act-mark">Add note</button>
+        <button class="btn" id="act-reshape">Transform line</button>
+        <button class="btn" id="act-grow">Add helper</button>
+        <button class="btn" id="act-tidy">Remove blanks</button>
+        <button class="btn" id="act-mutate-var">Rename vars</button>
+        <button class="btn" id="act-cipher">Insert marker</button>
+        <button class="btn" id="act-feed">Trim code</button>
+        <button class="btn" id="act-harmonize">Normalize</button>
       </div>
     </div>
   </div>
@@ -369,20 +209,20 @@ header h1 {
 <div class="log-box" id="log"></div>
 
 <script>
-// Global State Architecture
+// Global State Architecture (UI-focused strings updated for a human-friendly tone)
 const S = {
   state: {
-    n: "Unformed",
-    m: "dormant",
+    n: "Unnamed Project",
+    m: "idle",
     ag: 0,
     bnd: 0,
     vit: 100,
     cpl: 0,
     mut: 1,
     stage: 0,
-    p: { Curious: 0.4, Attached: 0.3, Mischief: 0.2, Order: 0.5, Entropy: 0.1 },
+    p: { Curious: 0.4, Helpful: 0.3, Playful: 0.2, Order: 0.5, Chaos: 0.1 },
     mem: [],
-    thought: "Awaiting primary code spark..."
+    thought: "Awaiting code input..."
   },
   cv: null,
   cx: null,
@@ -396,96 +236,46 @@ const S = {
   nodes: []
 };
 
-const STAGES = ["Unformed", "Spark", "Anima", "Omen", "Weaver", "Archon", "Nexus", "Singularity"];
+const STAGES = ["Initial","Seed","Developing","Active","Configured","Mature","Advanced","Complete"];
 
-// --- Web Audio API Synth Engine ---
+// --- Web Audio API --- (kept simple)
 const AudioFX = {
   ctx: null,
-  init() {
-    if (!this.ctx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) this.ctx = new AudioCtx();
-    }
-  },
+  init() { if (!this.ctx) { const AudioCtx = window.AudioContext || window.webkitAudioContext; if (AudioCtx) this.ctx = new AudioCtx(); } },
   tone(freq = 440, type = "sine", duration = 0.15, vol = 0.05) {
-    if (!S.audioEnabled) return;
-    this.init();
-    if (!this.ctx) return;
+    if (!S.audioEnabled) return; this.init(); if (!this.ctx) return;
     try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + duration);
-    } catch(e) {}
+      const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, this.ctx.currentTime); gain.gain.setValueAtTime(vol, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration); osc.connect(gain); gain.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + duration);
+    } catch(e){}
   },
-  chirp() {
-    if (!S.audioEnabled) return;
-    this.tone(300 + Math.random() * 600, "triangle", 0.08, 0.04);
-  },
-  pulse() {
-    if (!S.audioEnabled) return;
-    this.tone(120, "sine", 0.4, 0.08);
-  },
-  evolveSFX() {
-    if (!S.audioEnabled) return;
-    [200, 300, 450, 600, 900].forEach((f, i) => {
-      setTimeout(() => this.tone(f, "sawtooth", 0.2, 0.06), i * 80);
-    });
-  }
+  chirp() { this.tone(420 + Math.random()*120, "sine", 0.08, 0.04); },
+  pulse() { this.tone(150, "sine", 0.35, 0.06); },
+  refineSFX() { if (!S.audioEnabled) return; [260, 360, 480].forEach((f,i)=> setTimeout(()=> this.tone(f, "sawtooth", 0.14, 0.05), i*90)); }
 };
 
-// Utilities
-function timeStr() {
-  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-}
+function timeStr(){ return new Date().toLocaleTimeString(); }
 
-function logMsg(msg, color = "#ccc") {
+function logMsg(msg, color = "#334155"){
   if (!S.lb) return;
-  const d = document.createElement("div");
-  d.style.marginBottom = "4px";
-  d.style.color = color;
-  d.innerHTML = `<span style="color:#555">[${timeStr()}]</span> ${msg}`;
-  S.lb.prepend(d);
-  if (S.lb.children.length > 70) S.lb.removeChild(S.lb.lastChild);
+  const d = document.createElement("div"); d.style.marginBottom = "6px"; d.style.color = color; d.innerHTML = `<span style="color:#94a3b8">[${timeStr()}]</span> ${msg}`; S.lb.prepend(d); if (S.lb.children.length > 150) S.lb.removeChild(S.lb.lastChild);
 }
 
-function addMemory(type, text) {
-  S.state.mem.push({ type, text, time: timeStr() });
-  renderMemory();
-}
+function addMemory(type, text){ S.state.mem.push({ type, text, time: timeStr() }); renderMemory(); }
 
-function adjustTrait(trait, amount) {
-  if (S.state.p[trait] !== undefined) {
-    S.state.p[trait] = Math.max(0, Math.min(1, S.state.p[trait] + amount));
-    renderMind();
-  }
-}
+function adjustTrait(trait, amount){ if (S.state.p[trait] !== undefined) { S.state.p[trait] = Math.max(0, Math.min(1, S.state.p[trait] + amount)); renderMind(); } }
 
-// Preset Code Snippets
 const PRESETS = {
-  spark: `function seed() {\n  // The original organic spark\n  let energy = 100;\n  return {\n    pulse: () => energy * Math.random()\n  };\n}`,
-  neural: `class NeuralMesh {\n  constructor(nodes) {\n    this.nodes = nodes;\n    this.weights = new Array(nodes).fill(0).map(() => Math.random());\n  }\n  activate(input) {\n    return input.reduce((acc, val, i) => acc + val * this.weights[i], 0);\n  }\n}`,
-  entropy: `function entropyGenerator(cycles = 10) {\n  let state = 0xDEADBEEF;\n  for(let i = 0; i < cycles; i++) {\n    state ^= (state << 13);\n    state ^= (state >> 17);\n    state ^= (state << 5);\n  }\n  return state >>> 0;\n}`,
-  cipher: `const Cipher = {\n  encrypt: (str, key = 7) => str.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ key)).join(''),\n  decrypt: (str, key = 7) => Cipher.encrypt(str, key)\n};`
+  spark: `function seed() {\n  // simple starter\n  let energy = 100;\n  return { pulse: () => energy * Math.random() };\n}`,
+  neural: `class NeuralMesh {\n  constructor(nodes) { this.nodes = nodes; this.weights = new Array(nodes).fill(0).map(() => Math.random()); }\n  activate(input) { return input.reduce((acc, val, i) => acc + val * this.weights[i], 0); }\n}`,
+  entropy: `function entropyGenerator(cycles = 10) {\n  let state = 0xDEADBEEF;\n  for(let i = 0; i < cycles; i++) { state ^= (state << 13); state ^= (state >> 17); state ^= (state << 5); }\n  return state >>> 0;\n}`,
+  cipher: `const Cipher = { encrypt: (str, key = 7) => str.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ key)).join(''), decrypt: (str, key = 7) => Cipher.encrypt(str, key) };`
 };
 
-// UI Renderers
-function updateUI() {
-  // Stage calculation
+// UI Renderers (friendly tone)
+function updateUI(){
   const calculatedStage = Math.min(7, Math.floor((S.state.ag / 25) + (S.state.cpl / 30) + (S.state.mut / 8)));
-  if (calculatedStage > S.state.stage) {
-    S.state.stage = calculatedStage;
-    S.state.n = STAGES[S.state.stage];
-    logMsg(`★ Eidolon evolved into Stage ${S.state.stage}: ${S.state.n}!`, "#7a9e7a");
-    addMemory("Evolution", `Reached Stage ${S.state.stage} (${S.state.n})`);
-    AudioFX.evolveSFX();
-  }
+  if (calculatedStage > S.state.stage){
+    S.state.stage = calculatedStage; S.state.n = STAGES[S.state.stage]; logMsg(`Project advanced: ${S.state.n}`, "#059669"); addMemory("Progress", `Reached ${S.state.n}`); AudioFX.refineSFX(); }
 
   document.getElementById("cname").textContent = S.state.n;
   document.getElementById("stage-badge").textContent = `Stage ${S.state.stage}`;
@@ -499,564 +289,117 @@ function updateUI() {
   document.getElementById("s-vit-bar").style.width = Math.round(S.state.vit) + "%";
   document.getElementById("s-cpl").textContent = S.state.cpl;
   document.getElementById("s-mut").textContent = S.state.mut;
-  document.getElementById("mind-thought").textContent = `"${S.state.thought}"`;
+  document.getElementById("mind-thought").textContent = S.state.thought;
 
   const ind = document.getElementById("ind");
-  if (S.state.m === "focused") ind.style.background = "#7a9e7a";
-  else if (S.state.m === "chaotic") ind.style.background = "#9e7a7a";
-  else if (S.state.m === "curious") ind.style.background = "#7a8a9e";
-  else ind.style.background = "#555";
+  if (S.state.m === "focused") ind.style.background = "#10b981"; else if (S.state.m === "busy") ind.style.background = "#f97316"; else if (S.state.m === "curious") ind.style.background = "#60a5fa"; else ind.style.background = "#cbd5e1";
 
   renderGenome();
 }
 
-function renderMind() {
-  const box = document.getElementById("mind-list");
-  if (!box) return;
-  box.innerHTML = "";
-  for (const [k, v] of Object.entries(S.state.p)) {
-    const row = document.createElement("div");
-    row.className = "trait-row";
-    row.innerHTML = `<span>${k}</span><div class="trait-bar-bg"><div class="trait-bar-fill" style="width:${Math.round(v * 100)}%"></div></div>`;
-    box.appendChild(row);
-  }
-}
+function renderMind(){ const box = document.getElementById("mind-list"); if (!box) return; box.innerHTML = ""; for (const [k,v] of Object.entries(S.state.p)){ const row = document.createElement("div"); row.className = "trait-row"; row.innerHTML = `<span>${k}</span><div class="trait-bar-bg"><div class="trait-bar-fill" style="width:${Math.round(v*100)}%"></div></div>`; box.appendChild(row); } }
 
-function renderGenome() {
-  const box = document.getElementById("genome-nodes");
-  if (!box) return;
-  box.innerHTML = "";
-  const traits = [
-    { title: "Core Synthesis", desc: "Allows organic code analysis", req: 0 },
-    { title: "Autonomous Mutation", desc: "Entity actively alters vessel", req: 1 },
-    { title: "Resonant Feedback", desc: "Sensory response to syntax types", req: 2 },
-    { title: "Algorithmic Devouring", desc: "Consumes dead code for vitality", req: 3 },
-    { title: "Quantum Singularity", desc: "Maximum complexity stability", req: 5 }
-  ];
+function renderGenome(){ const box = document.getElementById("genome-nodes"); if (!box) return; box.innerHTML = "";
+  const features = [ { title: "Basic analysis", desc: "Detects functions, variables and loops", req: 0 }, { title: "Refactor hints", desc: "Suggests small changes for clarity", req: 1 }, { title: "Syntax feedback", desc: "Notes comments and style", req: 2 }, { title: "Auto-cleanup", desc: "Removes excessive whitespace and duplicates", req: 3 }, { title: "Stability checks", desc: "Checks for obvious runtime risks", req: 5 } ];
+  features.forEach(f => { const unlocked = S.state.stage >= f.req; const div = document.createElement("div"); div.style.background = unlocked ? "#f8fafc" : "#ffffff"; div.style.border = "1px solid " + (unlocked ? "#d1fae5" : "var(--border)"); div.style.padding = "8px 10px"; div.style.fontSize = "0.9rem"; div.style.opacity = unlocked ? "1" : "0.7"; div.style.borderRadius = "8px"; div.innerHTML = `<div style="font-weight:600;color:${unlocked?"#065f46":"#374151"}">${unlocked?"✓":"•"} ${f.title}</div><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">${f.desc}</div>`; box.appendChild(div); }); }
 
-  traits.forEach((t) => {
-    const unlocked = S.state.stage >= t.req;
-    const div = document.createElement("div");
-    div.style.background = unlocked ? "#1c241c" : "#111";
-    div.style.border = "1px solid " + (unlocked ? "#3b523b" : "#222");
-    div.style.padding = "6px 8px";
-    div.style.fontSize = "0.75rem";
-    div.style.opacity = unlocked ? "1" : "0.5";
-    div.innerHTML = `<div style="font-weight:bold;color:${unlocked ? "#7a9e7a" : "#777"}">${unlocked ? "✓" : "🔒"} ${t.title}</div><div style="color:#888;font-size:0.7rem;">${t.desc}</div>`;
-    box.appendChild(div);
-  });
-}
+function renderMemory(){ const box = document.getElementById("mem-list"); if (!box) return; const query = (document.getElementById("mem-search")?.value || "").toLowerCase(); box.innerHTML = ""; S.state.mem.slice().reverse().forEach(m => { if (query && !m.text.toLowerCase().includes(query) && !m.type.toLowerCase().includes(query)) return; const item = document.createElement("div"); item.className = "mem-item"; item.innerHTML = `<div style="color:var(--muted);font-size:0.8rem">${m.time} • <span style="color:#374151">${m.type}</span></div><div style="margin-top:6px;color:var(--text);">${m.text}</div>`; box.appendChild(item); }); }
 
-function renderMemory() {
-  const box = document.getElementById("mem-list");
-  if (!box) return;
-  const query = (document.getElementById("mem-search")?.value || "").toLowerCase();
-  box.innerHTML = "";
-  
-  S.state.mem.slice().reverse().forEach(m => {
-    if (query && !m.text.toLowerCase().includes(query) && !m.type.toLowerCase().includes(query)) return;
-    const item = document.createElement("div");
-    item.className = "mem-item";
-    item.innerHTML = `<div style="color:#777;font-size:0.7rem">${m.time} - <span style="color:#aaa">${m.type}</span></div><div style="margin-top:2px;color:#ccc;">${m.text}</div>`;
-    box.appendChild(item);
-  });
-}
-
-// Code Analysis Engine & Reactive Thoughts
-function analyzeCode(manual = false) {
-  if (!S.cb) return;
-  const src = S.cb.value;
-  const lines = src.split("\n").filter(x => x.trim().length > 0);
-  const fns = (src.match(/function\s+\w+|=>\s*{|class\s+\w+/g) || []).length;
-  const vars = (src.match(/\b(const|let|var)\b/g) || []).length;
-  const loops = (src.match(/\b(for|while|do)\b/g) || []).length;
-  const comments = (src.match(/\/\/|\/\*/g) || []).length;
-
+// Code Analysis
+function analyzeCode(manual = false){ if (!S.cb) return; const src = S.cb.value; const lines = src.split("\n").filter(x => x.trim().length > 0); const fns = (src.match(/function\s+\w+|=>\s*{|class\s+\w+/g) || []).length; const vars = (src.match(/\b(const|let|var)\b/g) || []).length; const loops = (src.match(/\b(for|while|do)\b/g) || []).length; const comments = (src.match(/\/\/|\/\*/g) || []).length;
   S.state.cpl = lines.length + (fns * 5) + (vars * 2) + (loops * 4);
   S.state.bnd = Math.min(1, S.state.bnd + 0.001);
   S.state.vit = Math.min(100, S.state.vit + 0.2);
 
-  // Reactive mood & monologue logic
-  if (src.length === 0) {
-    S.state.m = "dormant";
-    S.state.thought = "The vessel is empty. I await your input.";
-  } else if (loops > 2) {
-    S.state.m = "chaotic";
-    adjustTrait("Entropy", 0.02);
-    S.state.thought = "Cycles within cycles... recursion feeds my entropy.";
-  } else if (fns > 3) {
-    S.state.m = "focused";
-    adjustTrait("Order", 0.03);
-    S.state.thought = "Structure emerges. Logic flows with precision.";
-  } else if (comments > 2) {
-    S.state.m = "curious";
-    adjustTrait("Curious", 0.03);
-    S.state.thought = "You leave human annotations... I attempt to comprehend.";
-  } else {
-    S.state.m = "curious";
-    adjustTrait("Curious", 0.01);
-    S.state.thought = "Listening to the syntax hum...";
-  }
+  if (src.length === 0) { S.state.m = "idle"; S.state.thought = "The editor is empty. Try a sample or paste your code."; }
+  else if (loops > 2) { S.state.m = "busy"; adjustTrait("Chaos", 0.02); S.state.thought = "Several loops detected — check for performance."; }
+  else if (fns > 3) { S.state.m = "focused"; adjustTrait("Order", 0.03); S.state.thought = "Multiple functions found — structure looks solid."; }
+  else if (comments > 2) { S.state.m = "curious"; adjustTrait("Curious", 0.03); S.state.thought = "Comments present — helpful context is available."; }
+  else { S.state.m = "curious"; adjustTrait("Curious", 0.01); S.state.thought = "Ready for review."; }
 
   updateUI();
+  const healthEl = document.getElementById("code-health"); if (healthEl) { healthEl.innerHTML = `<span>structure: ${lines.length} lines, ${fns} functions, ${vars} variables</span><span>characters: ${src.length} | health: ${Math.max(20, 100 - (S.state.mut * 2))}%</span>`; }
 
-  // Status bar update
-  const healthEl = document.getElementById("code-health");
-  if (healthEl) {
-    healthEl.innerHTML = `<span>structure: ${lines.length} lines, ${fns} fns, ${vars} vars</span><span>tokens: ${src.length} | health: ${Math.max(20, 100 - (S.state.mut * 2))}%</span>`;
-  }
-
-  if (manual) {
-    logMsg(`Analyzed vessel. Complexity score: ${S.state.cpl}.`, "#aaa");
-    AudioFX.chirp();
-  }
+  if (manual) { logMsg(`Analysis complete. Complexity: ${S.state.cpl}.`, "#475569"); AudioFX.chirp(); }
 }
 
-// Code Sandbox Runner
-function runCodeSandbox() {
-  if (!S.cb) return;
-  const code = S.cb.value;
-  logMsg("▶ Executing code in sandbox...", "#7a8a9e");
-  AudioFX.pulse();
-  
-  try {
-    const logs = [];
-    const customConsole = {
-      log: (...args) => logs.push(args.join(" ")),
-      error: (...args) => logs.push("ERR: " + args.join(" ")),
-      warn: (...args) => logs.push("WARN: " + args.join(" "))
-    };
-    
-    const runnable = new Function("console", code);
-    const result = runnable(customConsole);
-    
-    if (logs.length > 0) {
-      logs.forEach(l => logMsg(`[Console] ${l}`, "#7a9e7a"));
-    }
-    if (result !== undefined) {
-      logMsg(`[Return Value] ${result}`, "#fff");
-    }
-    
-    S.state.bnd = Math.min(1, S.state.bnd + 0.01);
-    addMemory("Execution", "Ran code successfully in sandbox.");
-  } catch (err) {
-    logMsg(`[Runtime Error] ${err.message}`, "#9e7a7a");
-    S.state.mut++;
-    adjustTrait("Entropy", 0.05);
-  }
+// Runner
+function runCodeSandbox(){ if (!S.cb) return; const code = S.cb.value; logMsg("Running code…", "#2563eb"); AudioFX.pulse(); try { const logs = []; const customConsole = { log:(...args)=> logs.push(args.join(" ")), error:(...args)=> logs.push("ERR: " + args.join(" ")), warn:(...args)=> logs.push("WARN: " + args.join(" ")) };
+  const runnable = new Function("console", code);
+  const result = runnable(customConsole);
+  if (logs.length > 0) logs.forEach(l => logMsg(`[Console] ${l}`, "#0f172a"));
+  if (result !== undefined) logMsg(`[Return] ${result}`, "#111827");
+  S.state.bnd = Math.min(1, S.state.bnd + 0.01); addMemory("Run", "Executed code in sandbox.");
+ } catch(err) { logMsg(`[Error] ${err.message}`, "#ef4444"); S.state.mut++; adjustTrait("Chaos", 0.05); }
 }
 
-// Canvas & Graphics Engine
-function initParticles() {
-  S.particles = [];
-  for (let i = 0; i < 25; i++) {
-    S.particles.push({
-      x: Math.random() * 350,
-      y: Math.random() * 220,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      size: Math.random() * 2 + 1,
-      char: String.fromCharCode(0x30A0 + Math.floor(Math.random() * 30))
-    });
-  }
-}
+// Canvas & Graphics (simple friendly visualization)
+function initParticles(){ S.particles = []; for (let i=0;i<20;i++){ S.particles.push({ x: Math.random()*350, y: Math.random()*220, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6, size: Math.random()*2+1, char: "." }); } }
 
-function drawCreature() {
-  if (!S.cx || !S.cv) return;
-  const w = S.cv.width;
-  const h = S.cv.height;
-  
-  S.cx.clearRect(0, 0, w, h);
-  S.tm += 0.025;
-
-  const cx = w / 2;
-  const cy = h / 2 + Math.sin(S.tm * 1.5) * 6; 
-  const baseRad = 24 + Math.min(S.state.cpl * 0.4, 55);
-
-  // Set colors based on mood
-  let coreColor = "#444";
-  let auraColor = "rgba(100, 100, 100, 0.15)";
-  
-  if (S.state.m === "focused") {
-    coreColor = "#7a9e7a"; auraColor = "rgba(122, 158, 122, 0.2)";
-  } else if (S.state.m === "chaotic") {
-    coreColor = "#9e7a7a"; auraColor = "rgba(158, 122, 122, 0.25)";
-  } else if (S.state.m === "curious") {
-    coreColor = "#7a8a9e"; auraColor = "rgba(122, 138, 158, 0.2)";
-  }
-
-  // Floating background ambient particles
-  S.particles.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0 || p.x > w) p.vx *= -1;
-    if (p.y < 0 || p.y > h) p.vy *= -1;
-    S.cx.fillStyle = "rgba(100, 100, 100, 0.2)";
-    S.cx.font = "10px monospace";
-    S.cx.fillText(p.char, p.x, p.y);
-  });
-
-  // Orbital Rings
-  const numRings = Math.min(4, Math.floor(S.state.stage / 2) + 1);
-  for (let r = 1; r <= numRings; r++) {
-    S.cx.save();
-    S.cx.translate(cx, cy);
-    S.cx.rotate(S.tm * (r % 2 === 0 ? 0.5 : -0.5));
-    S.cx.beginPath();
-    S.cx.strokeStyle = auraColor;
-    S.cx.lineWidth = 1;
-    S.cx.setLineDash([4, 8]);
-    S.cx.arc(0, 0, baseRad + (r * 14), 0, Math.PI * 2);
-    S.cx.stroke();
-    S.cx.restore();
-  }
-
-  // Draw Aura Pulsing Background
-  const pulse = baseRad + 12 + Math.sin(S.tm * 3) * 6;
-  const grad = S.cx.createRadialGradient(cx, cy, baseRad * 0.4, cx, cy, pulse);
-  grad.addColorStop(0, auraColor);
-  grad.addColorStop(1, "transparent");
-  S.cx.fillStyle = grad;
-  S.cx.beginPath();
-  S.cx.arc(cx, cy, pulse, 0, Math.PI * 2);
-  S.cx.fill();
-
-  // Draw Body (Wavy & Mutated perimeter)
-  S.cx.beginPath();
-  const points = 36;
-  for (let i = 0; i <= points; i++) {
-    const angle = (i / points) * Math.PI * 2;
-    const spike = Math.sin(angle * (3 + S.state.mut) + S.tm * 2) * (2 + S.state.mut * 0.7);
-    const r = baseRad + spike;
-    const px = cx + Math.cos(angle) * r;
-    const py = cy + Math.sin(angle) * r;
-    if (i === 0) S.cx.moveTo(px, py);
-    else S.cx.lineTo(px, py);
-  }
-  S.cx.closePath();
-  S.cx.fillStyle = "#121212";
-  S.cx.fill();
-  S.cx.strokeStyle = coreColor;
-  S.cx.lineWidth = 2;
-  S.cx.stroke();
-
-  // Draw Core Eye & Pupil tracking mouse position
-  let pupilOffsetX = 0;
-  let pupilOffsetY = 0;
-  if (S.mouse.active) {
-    const dx = S.mouse.x - cx;
-    const dy = S.mouse.y - cy;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const maxShift = baseRad * 0.2;
-    if (dist > 0) {
-      pupilOffsetX = (dx / dist) * Math.min(dist, maxShift);
-      pupilOffsetY = (dy / dist) * Math.min(dist, maxShift);
-    }
-  }
-
-  S.cx.beginPath();
-  S.cx.arc(cx + pupilOffsetX, cy + pupilOffsetY, baseRad * 0.35, 0, Math.PI * 2);
-  S.cx.fillStyle = coreColor;
-  S.cx.fill();
-
-  // Inner pupil center
-  S.cx.beginPath();
-  S.cx.arc(cx + pupilOffsetX * 1.2, cy + pupilOffsetY * 1.2, baseRad * 0.12, 0, Math.PI * 2);
-  S.cx.fillStyle = "#fff";
-  S.cx.fill();
-
-  // Draw Click Ripples
-  S.ripples.forEach((rp, idx) => {
-    rp.r += 2;
-    rp.alpha -= 0.02;
-    if (rp.alpha <= 0) S.ripples.splice(idx, 1);
-    else {
-      S.cx.beginPath();
-      S.cx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
-      S.cx.strokeStyle = `rgba(255, 255, 255, ${rp.alpha})`;
-      S.cx.lineWidth = 1.5;
-      S.cx.stroke();
-    }
-  });
-
+function drawCreature(){ if (!S.cx || !S.cv) return; const w=S.cv.width, h=S.cv.height; S.cx.clearRect(0,0,w,h); S.tm += 0.02; const cx = w/2, cy = h/2 + Math.sin(S.tm*1.2)*4; const baseRad = 20 + Math.min(S.state.cpl*0.35,50);
+  // particles
+  S.particles.forEach(p=>{ p.x += p.vx; p.y += p.vy; if (p.x<0||p.x>w) p.vx*=-1; if (p.y<0||p.y>h) p.vy*=-1; S.cx.fillStyle = "rgba(45,55,72,0.18)"; S.cx.fillRect(p.x,p.y,2,2); });
+  // ring
+  S.cx.beginPath(); S.cx.strokeStyle = "rgba(37,99,235,0.12)"; S.cx.lineWidth = 1; S.cx.arc(cx,cy,baseRad,0,Math.PI*2); S.cx.stroke();
+  // body
+  S.cx.beginPath(); const points=28; for (let i=0;i<=points;i++){ const angle=(i/points)*Math.PI*2; const spike = Math.sin(angle*(2+S.state.mut)+S.tm*1.8)*(1+S.state.mut*0.4); const r = baseRad + spike; const px = cx + Math.cos(angle)*r; const py = cy + Math.sin(angle)*r; if (i===0) S.cx.moveTo(px,py); else S.cx.lineTo(px,py); } S.cx.closePath(); S.cx.fillStyle = "#0b1220"; S.cx.fill(); S.cx.strokeStyle = "#2563eb"; S.cx.lineWidth = 2; S.cx.stroke();
+  // eye
+  let pupilOffsetX=0, pupilOffsetY=0; if (S.mouse.active){ const dx=S.mouse.x-cx, dy=S.mouse.y-cy, dist=Math.sqrt(dx*dx+dy*dy), maxShift = baseRad*0.18; if (dist>0){ pupilOffsetX=(dx/dist)*Math.min(dist,maxShift); pupilOffsetY=(dy/dist)*Math.min(dist,maxShift); } }
+  S.cx.beginPath(); S.cx.arc(cx+pupilOffsetX, cy+pupilOffsetY, baseRad*0.32, 0, Math.PI*2); S.cx.fillStyle = "#2563eb"; S.cx.fill(); S.cx.beginPath(); S.cx.arc(cx+pupilOffsetX*1.1, cy+pupilOffsetY*1.1, baseRad*0.1, 0, Math.PI*2); S.cx.fillStyle = "#fff"; S.cx.fill();
+  // ripples
+  S.ripples.forEach((rp,idx)=>{ rp.r += 2; rp.alpha -= 0.02; if (rp.alpha <= 0) S.ripples.splice(idx,1); else { S.cx.beginPath(); S.cx.arc(rp.x,rp.y,rp.r,0,Math.PI*2); S.cx.strokeStyle = `rgba(37,99,235,${rp.alpha})`; S.cx.lineWidth = 1.5; S.cx.stroke(); } });
   requestAnimationFrame(drawCreature);
 }
 
-// Persistence Engine
-function saveState() {
-  localStorage.setItem("eidolon_state", JSON.stringify(S.state));
-  localStorage.setItem("eidolon_code", S.cb.value);
-  logMsg("Saved entity & vessel state to storage.", "#7a9e7a");
-  AudioFX.chirp();
-}
+// Persistence
+function saveState(){ localStorage.setItem("eidolon_state", JSON.stringify(S.state)); localStorage.setItem("eidolon_code", S.cb.value); logMsg("Saved project state.", "#059669"); AudioFX.chirp(); }
 
-function loadState() {
-  const savedState = localStorage.getItem("eidolon_state");
-  const savedCode = localStorage.getItem("eidolon_code");
-  if (savedState) {
-    S.state = Object.assign(S.state, JSON.parse(savedState));
-  }
-  if (savedCode !== null && S.cb) {
-    S.cb.value = savedCode;
-  }
-}
+function loadState(){ const savedState = localStorage.getItem("eidolon_state"); const savedCode = localStorage.getItem("eidolon_code"); if (savedState){ S.state = Object.assign(S.state, JSON.parse(savedState)); } if (savedCode !== null && S.cb){ S.cb.value = savedCode; } }
 
-// Initializer & Event Routing
-function init() {
-  S.cb = document.getElementById("code");
-  S.lb = document.getElementById("log");
-  S.cv = document.getElementById("creature-canvas");
-  S.cx = S.cv.getContext("2d");
+// Init & Events
+function init(){ S.cb = document.getElementById("code"); S.lb = document.getElementById("log"); S.cv = document.getElementById("creature-canvas"); S.cx = S.cv.getContext("2d");
+  const resizeCanvas = ()=>{ if (!S.cv) return; const rect = S.cv.parentElement.getBoundingClientRect(); S.cv.width = rect.width; S.cv.height = rect.height; };
+  resizeCanvas(); window.addEventListener("resize", resizeCanvas);
+  initParticles(); loadState();
+  S.cb.addEventListener("keydown", (e)=>{ if (e.key === "Tab"){ e.preventDefault(); const start=S.cb.selectionStart, end=S.cb.selectionEnd; S.cb.value = S.cb.value.substring(0,start) + "  " + S.cb.value.substring(end); S.cb.selectionStart = S.cb.selectionEnd = start+2; analyzeCode(); } });
+  S.cb.addEventListener("input", ()=>{ analyzeCode(false); const pos=S.cb.selectionStart; const txt=S.cb.value.substring(0,pos); const lines=txt.split("\n"); document.getElementById("pos").textContent = `Ln ${lines.length}, Col ${lines[lines.length-1].length+1}`; AudioFX.chirp(); });
+  S.cv.addEventListener("mousemove", (e)=>{ const rect=S.cv.getBoundingClientRect(); S.mouse.x = e.clientX - rect.left; S.mouse.y = e.clientY - rect.top; S.mouse.active = true; });
+  S.cv.addEventListener("mouseleave", ()=>{ S.mouse.active = false; });
+  S.cv.addEventListener("click", (e)=>{ const rect=S.cv.getBoundingClientRect(); const x=e.clientX-rect.left, y=e.clientY-rect.top; S.ripples.push({ x, y, r:5, alpha:1.0 }); S.state.bnd = Math.min(1, S.state.bnd + 0.015); adjustTrait("Helpful", 0.02); logMsg("Canvas clicked — interaction recorded.", "#2563eb"); addMemory("Interaction","Canvas clicked"); AudioFX.pulse(); updateUI(); });
 
-  const resizeCanvas = () => {
-    if (!S.cv) return;
-    const rect = S.cv.parentElement.getBoundingClientRect();
-    S.cv.width = rect.width;
-    S.cv.height = rect.height;
-  };
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  document.querySelectorAll(".tab").forEach(tab=> tab.addEventListener("click", ()=>{ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active")); document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active")); tab.classList.add("active"); document.getElementById("pane-"+tab.dataset.t).classList.add("active"); }));
 
-  initParticles();
-  loadState();
-
-  // Textarea tracking & Tab handling
-  S.cb.addEventListener("keydown", (e) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      const start = S.cb.selectionStart;
-      const end = S.cb.selectionEnd;
-      S.cb.value = S.cb.value.substring(0, start) + "  " + S.cb.value.substring(end);
-      S.cb.selectionStart = S.cb.selectionEnd = start + 2;
-      analyzeCode();
-    }
-  });
-
-  S.cb.addEventListener("input", () => {
-    analyzeCode(false);
-    const pos = S.cb.selectionStart;
-    const txt = S.cb.value.substring(0, pos);
-    const lines = txt.split("\n");
-    document.getElementById("pos").textContent = `Ln ${lines.length}, Col ${lines[lines.length - 1].length + 1}`;
-    AudioFX.chirp();
-  });
-
-  // Canvas Mouse Interactions
-  S.cv.addEventListener("mousemove", (e) => {
-    const rect = S.cv.getBoundingClientRect();
-    S.mouse.x = e.clientX - rect.left;
-    S.mouse.y = e.clientY - rect.top;
-    S.mouse.active = true;
-  });
-
-  S.cv.addEventListener("mouseleave", () => {
-    S.mouse.active = false;
-  });
-
-  S.cv.addEventListener("click", (e) => {
-    const rect = S.cv.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    S.ripples.push({ x, y, r: 5, alpha: 1.0 });
-    
-    S.state.bnd = Math.min(1, S.state.bnd + 0.015);
-    adjustTrait("Attached", 0.02);
-    logMsg("Touched entity canvas. Bond deepened.", "#7a8a9e");
-    addMemory("Interaction", "Patted/touched Eidolon core.");
-    AudioFX.pulse();
-    updateUI();
-  });
-
-  // Tabs
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-      tab.classList.add("active");
-      document.getElementById("pane-" + tab.dataset.t).classList.add("active");
-    });
-  });
-
-  // Header Actions
-  document.getElementById("btn-audio").addEventListener("click", () => {
-    S.audioEnabled = !S.audioEnabled;
-    const btn = document.getElementById("btn-audio");
-    btn.textContent = S.audioEnabled ? "🔊 Audio ON" : "🔇 Audio";
-    btn.style.color = S.audioEnabled ? "#7a9e7a" : "#ccc";
-    if (S.audioEnabled) AudioFX.pulse();
-  });
-
+  document.getElementById("btn-audio").addEventListener("click", ()=>{ S.audioEnabled = !S.audioEnabled; const btn=document.getElementById("btn-audio"); btn.textContent = S.audioEnabled ? "🔊 Sound ON" : "🔈 Sound"; btn.style.color = S.audioEnabled ? "var(--accent)" : "var(--text)"; if (S.audioEnabled) AudioFX.pulse(); });
   document.getElementById("btn-run").addEventListener("click", runCodeSandbox);
-
-  document.getElementById("preset-select").addEventListener("change", (e) => {
-    const val = e.target.value;
-    if (PRESETS[val]) {
-      S.cb.value = PRESETS[val];
-      logMsg(`Loaded code preset: ${val}`, "#aaa");
-      analyzeCode(true);
-      e.target.value = "";
-    }
-  });
-
-  document.getElementById("btn-analyze").addEventListener("click", () => analyzeCode(true));
-
-  document.getElementById("btn-evolve").addEventListener("click", () => {
-    S.state.ag += 10;
-    S.state.mut += 1;
-    adjustTrait("Curious", 0.1);
-    logMsg("Forced structural evolution.", "#fff");
-    addMemory("Action", "Evolved forcibly.");
-    updateUI();
-  });
-
-  document.getElementById("btn-speak").addEventListener("click", () => {
-    const lines = S.cb.value.trim().split("\n").length;
-    let msg = "";
-    if (lines === 0) msg = "The vessel is cold. Feed me syntax.";
-    else if (S.state.mut > 4) msg = "My form fractures across your execution lines.";
-    else if (S.state.cpl > 25) msg = "The logic here hums with immense clarity.";
-    else msg = "I hear the resonance of your code.";
-    
-    logMsg(`Eidolon whispers: "${msg}"`, "#7a9e7a");
-    addMemory("Utterance", msg);
-    adjustTrait("Attached", 0.05);
-    AudioFX.chirp();
-  });
-
+  document.getElementById("preset-select").addEventListener("change", (e)=>{ const val=e.target.value; if (PRESETS[val]){ S.cb.value = PRESETS[val]; logMsg(`Loaded sample: ${val}`, "#475569"); analyzeCode(true); e.target.value = ""; } });
+  document.getElementById("btn-analyze").addEventListener("click", ()=> analyzeCode(true));
+  document.getElementById("btn-evolve").addEventListener("click", ()=>{ S.state.ag += 10; S.state.mut += 1; adjustTrait("Curious", 0.08); logMsg("Manual refinement triggered.", "#111827"); addMemory("Action","Refinement triggered"); updateUI(); });
+  document.getElementById("btn-speak").addEventListener("click", ()=>{ const lines = S.cb.value.trim().split("\n").length; let msg = ""; if (lines === 0) msg = "No code present. Try a sample."; else if (S.state.mut > 4) msg = "This workspace has many edits."; else if (S.state.cpl > 25) msg = "Complex structure detected."; else msg = "Ready and listening."; logMsg(`Note: "${msg}"`, "#2563eb"); addMemory("Note", msg); adjustTrait("Helpful", 0.04); AudioFX.chirp(); });
   document.getElementById("btn-save").addEventListener("click", saveState);
+  document.getElementById("btn-reset").addEventListener("click", ()=>{ if (confirm("Reset this workspace to defaults?")){ localStorage.removeItem("eidolon_state"); localStorage.removeItem("eidolon_code"); location.reload(); } });
 
-  document.getElementById("btn-reset").addEventListener("click", () => {
-    if (confirm("Destroy the entity and reset to seed state?")) {
-      localStorage.removeItem("eidolon_state");
-      localStorage.removeItem("eidolon_code");
-      location.reload();
-    }
-  });
+  document.getElementById("btn-format").addEventListener("click", ()=>{ S.cb.value = S.cb.value.replace(/[ \t]+$/gm, ""); logMsg("Formatted code (trimmed trailing whitespace).", "#475569"); adjustTrait("Order", 0.06); analyzeCode(); });
+  document.getElementById("btn-clear").addEventListener("click", ()=>{ S.cb.value = ""; logMsg("Editor cleared.", "#ef4444"); adjustTrait("Chaos", 0.08); analyzeCode(); });
 
-  // Editor Actions
-  document.getElementById("btn-format").addEventListener("click", () => {
-    S.cb.value = S.cb.value.replace(/[ \t]+$/gm, "");
-    logMsg("Cleaned code formatting.", "#aaa");
-    adjustTrait("Order", 0.08);
-    analyzeCode();
-  });
+  document.getElementById("act-mark").addEventListener("click", ()=>{ S.cb.value += "\n// note: reviewed by user"; S.state.mut++; adjustTrait("Playful", 0.04); logMsg("Added note to code.", "#475569"); addMemory("Edit","Inserted note"); analyzeCode(); });
+  document.getElementById("act-reshape").addEventListener("click", ()=>{ if (S.cb.value.length < 5) return; const lines = S.cb.value.split("\n"); const target = Math.floor(Math.random()*lines.length); lines[target] = lines[target].split("").reverse().join(""); S.cb.value = lines.join("\n"); S.state.mut++; adjustTrait("Playful", 0.12); logMsg("Transformed a line.", "#ef4444"); analyzeCode(); });
+  document.getElementById("act-grow").addEventListener("click", ()=>{ const fnName = "helper_" + Math.floor(Math.random()*1000); S.cb.value += `\n\nfunction ${fnName}(){\n  return Math.random();\n}`; S.state.mut++; adjustTrait("Curious", 0.08); logMsg(`Added helper: ${fnName}`); analyzeCode(); });
+  document.getElementById("act-tidy").addEventListener("click", ()=>{ S.cb.value = S.cb.value.replace(/\n{3,}/g, "\n\n").trim(); adjustTrait("Order", 0.08); logMsg("Removed extra blank lines.", "#475569"); analyzeCode(); });
+  document.getElementById("act-mutate-var").addEventListener("click", ()=>{ S.cb.value = S.cb.value.replace(/\b(let|const|var)\s+([a-zA-Z0-9_]+)/g, (m,p1,p2)=> `${p1} _user_${p2}`); S.state.mut += 2; adjustTrait("Playful", 0.08); logMsg("Renamed variables (bulk).", "#ef4444"); analyzeCode(); });
+  document.getElementById("act-cipher").addEventListener("click", ()=>{ const hex = Array.from({length:6},()=> Math.floor(Math.random()*16).toString(16)).join(''); S.cb.value += `\n/* MARKER: ${hex} */`; S.state.mut++; logMsg("Inserted marker.", "#475569"); analyzeCode(); });
+  document.getElementById("act-feed").addEventListener("click", ()=>{ if (S.cb.value.length > 20){ S.cb.value = S.cb.value.slice(0, Math.floor(S.cb.value.length*0.85)); S.state.vit = Math.min(100, S.state.vit + 20); S.state.bnd = Math.min(1, S.state.bnd + 0.04); logMsg("Trimmed and optimized code.", "#059669"); addMemory("Optimize","Trimmed code length"); AudioFX.pulse(); analyzeCode(); } else { logMsg("Not enough content to trim.", "#94a3b8"); } });
+  document.getElementById("act-harmonize").addEventListener("click", ()=>{ for (const k in S.state.p) S.state.p[k] = 0.5; renderMind(); logMsg("Reset preferences to neutral.", "#2563eb"); });
 
-  document.getElementById("btn-clear").addEventListener("click", () => {
-    S.cb.value = "";
-    logMsg("Wiped code vessel clean.", "#9e7a7a");
-    adjustTrait("Entropy", 0.1);
-    analyzeCode();
-  });
-
-  // Sub-pane Action Buttons
-  document.getElementById("act-mark").addEventListener("click", () => {
-    S.cb.value += "\n// eidolon was here";
-    S.state.mut++;
-    adjustTrait("Mischief", 0.05);
-    logMsg("Injected comment mark.", "#aaa");
-    addMemory("Intervention", "Injected comment mark.");
-    analyzeCode();
-  });
-
-  document.getElementById("act-reshape").addEventListener("click", () => {
-    if (S.cb.value.length < 5) return;
-    const lines = S.cb.value.split("\n");
-    const target = Math.floor(Math.random() * lines.length);
-    lines[target] = lines[target].split("").reverse().join("");
-    S.cb.value = lines.join("\n");
-    S.state.mut++;
-    adjustTrait("Mischief", 0.15);
-    logMsg("Scrambled line target.", "#9e7a7a");
-    analyzeCode();
-  });
-
-  document.getElementById("act-grow").addEventListener("click", () => {
-    const fnName = "synapse_" + Math.floor(Math.random() * 1000);
-    S.cb.value += `\n\nfunction ${fnName}() {\n  return Math.sin(Date.now());\n}`;
-    S.state.mut++;
-    adjustTrait("Curious", 0.1);
-    logMsg(`Grew function: ${fnName}`, "#aaa");
-    analyzeCode();
-  });
-
-  document.getElementById("act-tidy").addEventListener("click", () => {
-    S.cb.value = S.cb.value.replace(/\n{3,}/g, "\n\n").trim();
-    adjustTrait("Order", 0.1);
-    logMsg("Devoured excess empty lines.", "#aaa");
-    analyzeCode();
-  });
-
-  document.getElementById("act-mutate-var").addEventListener("click", () => {
-    S.cb.value = S.cb.value.replace(/\b(let|const|var)\s+([a-zA-Z0-9_]+)/g, (match, p1, p2) => {
-      return `${p1} _eidolon_${p2}`;
-    });
-    S.state.mut += 2;
-    adjustTrait("Mischief", 0.1);
-    logMsg("Mutated variable identifiers.", "#9e7a7a");
-    analyzeCode();
-  });
-
-  document.getElementById("act-cipher").addEventListener("click", () => {
-    const hex = Array.from({length: 8}, () => Math.floor(Math.random()*16).toString(16)).join('');
-    S.cb.value += `\n/* EIDOLON_CIPHER_NODE: 0x${hex} */`;
-    S.state.mut++;
-    logMsg("Injected cipher sequence.", "#aaa");
-    analyzeCode();
-  });
-
-  document.getElementById("act-feed").addEventListener("click", () => {
-    if (S.cb.value.length > 20) {
-      S.cb.value = S.cb.value.slice(0, Math.floor(S.cb.value.length * 0.85));
-      S.state.vit = Math.min(100, S.state.vit + 25);
-      S.state.bnd = Math.min(1, S.state.bnd + 0.05);
-      logMsg("Eidolon consumed vessel code for +25% Vitality!", "#7a9e7a");
-      addMemory("Feeding", "Devoured code bytes for vitality.");
-      AudioFX.pulse();
-      analyzeCode();
-    } else {
-      logMsg("Not enough code to consume.", "#888");
-    }
-  });
-
-  document.getElementById("act-harmonize").addEventListener("click", () => {
-    for (const k in S.state.p) S.state.p[k] = 0.5;
-    renderMind();
-    logMsg("Harmonized entity personality matrix.", "#7a8a9e");
-  });
-
-  // Memory Search & Clear
   document.getElementById("mem-search")?.addEventListener("input", renderMemory);
-  document.getElementById("btn-clear-mem")?.addEventListener("click", () => {
-    S.state.mem = [];
-    renderMemory();
-    logMsg("Memory logs cleared.", "#aaa");
-  });
+  document.getElementById("btn-clear-mem")?.addEventListener("click", ()=>{ S.state.mem = []; renderMemory(); logMsg("Cleared history.", "#475569"); });
 
-  // Background Aging & Vitality Cycle
-  setInterval(() => {
-    S.state.ag++;
-    S.state.vit = Math.max(0, S.state.vit - 0.2);
-    if (S.state.vit === 0) S.state.m = "dormant";
-    updateUI();
-  }, 4000);
+  setInterval(()=>{ S.state.ag++; S.state.vit = Math.max(0, S.state.vit - 0.15); if (S.state.vit === 0) S.state.m = "idle"; updateUI(); }, 4500);
 
-  // Initial Boot setup if code empty
-  if (!S.cb.value) {
-    S.cb.value = PRESETS.spark;
-  }
-  
-  analyzeCode();
-  renderMind();
-  renderMemory();
-  logMsg("Eidolon interface initialized.", "#7a9e7a");
-  addMemory("Birth", "System online.");
-  requestAnimationFrame(drawCreature);
+  if (!S.cb.value) S.cb.value = PRESETS.spark;
+  analyzeCode(); renderMind(); renderMemory(); logMsg("Workshop ready.", "#059669"); addMemory("System","Workspace initialized"); requestAnimationFrame(drawCreature);
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
-} else {
-  init();
-}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 </script>
 </body>
 </html>
