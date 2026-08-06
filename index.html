@@ -3,698 +3,567 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eidolon</title>
-<script src="https://unpkg.com/lucide@latest"></script>
+<title>Eidolon Interface</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
-:root{--bg:#0c0b09;--ink:#1a1814;--paper:#e8e0d0;--blood:#8b3a3a;--moss:#3d4a34;--amber:#c4a35a;--glow:#7a9e7a;--dim:#2a2620;--text:#d4cbb8;--muted:#8a7f6e}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace}
-body{display:grid;grid-template-columns:1fr 380px;grid-template-rows:48px 1fr 160px}
-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--ink);border-bottom:1px solid #2e2a24;z-index:10}
-header h1{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:0.04em;color:var(--paper)}
-header h1 span{color:var(--amber);font-style:italic}
-.header-actions{display:flex;gap:10px;align-items:center}
-.btn{background:transparent;border:1px solid #3a342c;color:var(--text);padding:6px 12px;font-family:inherit;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s}
-.btn:hover{border-color:var(--amber);color:var(--amber)}
-.btn.active{border-color:var(--glow);color:var(--glow)}
-.btn svg{width:14px;height:14px}
-#workspace{display:grid;grid-template-rows:1fr auto;overflow:hidden;border-right:1px solid #2e2a24}
-.editor-wrap{position:relative;overflow:hidden;display:flex;flex-direction:column}
-.editor-toolbar{display:flex;gap:4px;padding:6px 10px;background:var(--ink);border-bottom:1px solid #2e2a24;flex-shrink:0}
-.editor-toolbar .btn{padding:4px 8px;font-size:0.7rem}
-#code{flex:1;width:100%;background:#12100e;color:#d4cbb8;border:none;outline:none;resize:none;padding:16px 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.55;tab-size:2;caret-color:var(--amber)}
-#code::selection{background:#3a342c}
-.status-bar{display:flex;justify-content:space-between;padding:4px 12px;background:var(--ink);border-top:1px solid #2e2a24;font-size:0.7rem;color:var(--muted)}
-#creature-panel{display:flex;flex-direction:column;background:var(--ink);overflow:hidden}
-.creature-viewport{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#16130f 0%,#0c0b09 70%);overflow:hidden}
-#creature-canvas{width:100%;height:100%;display:block}
-.creature-info{padding:12px 16px;border-top:1px solid #2e2a24;background:#12100e}
-.creature-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--paper);margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.creature-name svg{width:18px;height:18px;color:var(--amber)}
-.mood-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.75rem}
-.mood-bar{flex:1;height:6px;background:#1e1b16;border-radius:3px;overflow:hidden}
-.mood-fill{height:100%;transition:width 0.6s ease,background 0.4s}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:0.7rem}
-.stat{background:#1a1814;padding:6px 8px;border:1px solid #2e2a24}
-.stat-label{color:var(--muted);font-size:0.65rem}
-.stat-value{color:var(--paper);margin-top:2px}
-#log-panel{grid-column:1/-1;background:#0f0e0c;border-top:1px solid #2e2a24;display:flex;flex-direction:column;overflow:hidden}
-.log-header{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;border-bottom:1px solid #2e2a24;font-size:0.75rem;color:var(--muted)}
-#log{flex:1;overflow-y:auto;padding:8px 14px;font-size:0.72rem;line-height:1.5}
-.log-entry{margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #1e1b16;display:flex;gap:10px}
-.log-time{color:var(--muted);flex-shrink:0;width:64px}
-.log-msg{color:var(--text)}
-.log-msg.action{color:var(--amber)}
-.log-msg.emotion{color:var(--glow)}
-.log-msg.warning{color:var(--blood)}
-.sidebar-tabs{display:flex;border-bottom:1px solid #2e2a24}
-.sidebar-tab{flex:1;padding:8px;text-align:center;font-size:0.7rem;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;display:flex;align-items:center;justify-content:center;gap:5px}
-.sidebar-tab.active{color:var(--amber);border-bottom-color:var(--amber)}
-.sidebar-tab svg{width:13px;height:13px}
-.tab-content{display:none;flex:1;overflow-y:auto;padding:12px}
-.tab-content.active{display:block}
-.memory-item{padding:8px;margin-bottom:6px;background:#1a1814;border:1px solid #2e2a24;font-size:0.7rem;cursor:pointer}
-.memory-item:hover{border-color:#3a342c}
-.memory-item .mem-time{color:var(--muted);font-size:0.65rem}
-.memory-item .mem-preview{margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
-.personality-trait{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:0.72rem}
-.trait-bar{width:90px;height:5px;background:#1e1b16;border-radius:2px;overflow:hidden}
-.trait-fill{height:100%;background:var(--moss)}
-.action-list{display:flex;flex-direction:column;gap:6px}
-.action-btn{width:100%;justify-content:flex-start;padding:8px 10px}
-.pulse{animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:0.7}50%{opacity:1}}
-.fade-in{animation:fadeIn 0.4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#2e2a24;border-radius:3px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:100}
-.modal-overlay.show{display:flex}
-.modal{background:var(--ink);border:1px solid #3a342c;padding:24px;width:420px;max-width:90vw}
-.modal h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:12px;color:var(--paper)}
-.modal p{font-size:0.8rem;line-height:1.5;color:var(--muted);margin-bottom:16px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end}
-.tooltip{position:absolute;background:#1a1814;border:1px solid #3a342c;padding:6px 10px;font-size:0.7rem;pointer-events:none;z-index:50;opacity:0;transition:opacity 0.15s}
-.tooltip.show{opacity:1}
-#activity-indicator{width:8px;height:8px;border-radius:50%;background:var(--moss);margin-right:6px}
-#activity-indicator.idle{background:#3a342c}
-#activity-indicator.anxious{background:#8b3a3a}
-#activity-indicator.happy{background:#7a9e7a}
-#activity-indicator.lonely{background:#5a4a6a}
+body {
+  margin: 0;
+  background: #111;
+  color: #ccc;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+header {
+  background: #1a1a1a;
+  border-bottom: 2px solid #333;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #fff;
+}
+.header-actions {
+  display: flex;
+  gap: 5px;
+}
+.btn {
+  background: #222;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 6px 12px;
+  font-family: monospace;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn:hover {
+  background: #444;
+  color: #fff;
+}
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+.editor-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #333;
+}
+.toolbar {
+  background: #151515;
+  padding: 5px 10px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  gap: 5px;
+}
+#code {
+  flex: 1;
+  background: #0d0d0d;
+  color: #ddd;
+  border: none;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+}
+.side-pane {
+  width: 350px;
+  background: #151515;
+  display: flex;
+  flex-direction: column;
+}
+.tabs {
+  display: flex;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.tab.active {
+  border-bottom-color: #aaa;
+  color: #fff;
+  background: #222;
+}
+.tab-pane {
+  display: none;
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+.tab-pane.active {
+  display: block;
+}
+.canvas-box {
+  height: 220px;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+  border: 1px solid #333;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+#creature-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.stats-box div {
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+}
+.stats-box span {
+  color: #fff;
+}
+.log-box {
+  height: 140px;
+  background: #080808;
+  border-top: 2px solid #333;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 0.8rem;
+}
+.mem-item {
+  background: #111;
+  border-left: 2px solid #555;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.trait-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+.trait-bar-bg {
+  width: 120px;
+  background: #222;
+  height: 8px;
+  border: 1px solid #444;
+}
+.trait-bar-fill {
+  background: #7a9e7a;
+  height: 100%;
+  transition: width 0.3s;
+}
 </style>
 </head>
 <body>
 <header>
-<div style="display:flex;align-items:center;gap:10px">
-<div id="activity-indicator" class="idle"></div>
-<h1>Eidolon <span id="creature-title-name">Unformed</span></h1>
+<div style="display:flex;align-items:center;gap:10px;">
+<div id="ind" style="width:12px;height:12px;border-radius:50%;background:#555;"></div>
+<h1>Eidolon: <span id="cname">Unformed</span></h1>
 </div>
 <div class="header-actions">
-<button class="btn" id="btn-analyze"><i data-lucide="scan"></i> Analyze</button>
-<button class="btn" id="btn-evolve"><i data-lucide="sprout"></i> Evolve</button>
-<button class="btn" id="btn-speak"><i data-lucide="message-circle"></i> Listen</button>
-<button class="btn" id="btn-reset"><i data-lucide="rotate-ccw"></i> Reset</button>
+<button class="btn" id="btn-analyze">Analyze</button>
+<button class="btn" id="btn-evolve">Evolve</button>
+<button class="btn" id="btn-speak">Listen</button>
+<button class="btn" id="btn-reset">Reset</button>
 </div>
 </header>
-<div id="workspace">
-<div class="editor-wrap">
-<div class="editor-toolbar">
-<button class="btn" id="btn-format"><i data-lucide="align-left"></i> Format</button>
-<button class="btn" id="btn-snapshot"><i data-lucide="camera"></i> Snapshot</button>
-<button class="btn" id="btn-clear"><i data-lucide="trash-2"></i> Clear</button>
-<span style="flex:1"></span>
-<span id="loc-count" style="font-size:0.7rem;color:var(--muted);align-self:center">0 lines</span>
+
+<div class="main-container">
+<div class="editor-pane">
+<div class="toolbar">
+<button class="btn" id="btn-format">Clean Formatting</button>
+<button class="btn" id="btn-clear">Clear Code</button>
+<span id="pos" style="margin-left:auto;font-size:0.8rem;color:#777;align-self:center;">Ln 1, Col 1</span>
 </div>
-<textarea id="code" spellcheck="false" placeholder=""></textarea>
-<div class="status-bar">
-<span id="cursor-pos">Ln 1, Col 1</span>
-<span id="code-health">structure: unknown</span>
-<span id="last-activity">no activity</span>
+<textarea id="code" spellcheck="false"></textarea>
+<div style="background:#1a1a1a;padding:5px 10px;font-size:0.75rem;border-top:1px solid #333;color:#888;" id="code-health">
+structure: unknown
 </div>
 </div>
+
+<div class="side-pane">
+<div class="tabs">
+<div class="tab active" data-t="being">Being</div>
+<div class="tab" data-t="memory">Memory</div>
+<div class="tab" data-t="mind">Mind</div>
+<div class="tab" data-t="actions">Act</div>
 </div>
-<div id="creature-panel">
-<div class="sidebar-tabs">
-<div class="sidebar-tab active" data-tab="being"><i data-lucide="ghost"></i> Being</div>
-<div class="sidebar-tab" data-tab="memory"><i data-lucide="book-open"></i> Memory</div>
-<div class="sidebar-tab" data-tab="mind"><i data-lucide="brain"></i> Mind</div>
-<div class="sidebar-tab" data-tab="actions"><i data-lucide="zap"></i> Act</div>
-</div>
-<div class="tab-content active" id="tab-being">
-<div class="creature-viewport">
-<canvas id="creature-canvas"></canvas>
-</div>
-<div class="creature-info">
-<div class="creature-name"><i data-lucide="sparkles"></i> <span id="display-name">Unformed</span></div>
-<div class="mood-row">
-<span id="mood-label">dormant</span>
-<div class="mood-bar"><div class="mood-fill" id="mood-fill" style="width:20%;background:#3a342c"></div></div>
-</div>
-<div class="stat-grid">
-<div class="stat"><div class="stat-label">age</div><div class="stat-value" id="stat-age">0 cycles</div></div>
-<div class="stat"><div class="stat-label">bond</div><div class="stat-value" id="stat-bond">0%</div></div>
-<div class="stat"><div class="stat-label">complexity</div><div class="stat-value" id="stat-complexity">0</div></div>
-<div class="stat"><div class="stat-label">mutations</div><div class="stat-value" id="stat-mutations">0</div></div>
+
+<div class="tab-pane active" id="pane-being">
+<div class="canvas-box"><canvas id="creature-canvas"></canvas></div>
+<div class="stats-box">
+<div>Name: <span id="s-name">Unformed</span></div>
+<div>Mood: <span id="s-mood">dormant</span></div>
+<div>Age: <span id="s-age">0 cycles</span></div>
+<div>Bond: <span id="s-bond">0%</span></div>
+<div>Complexity: <span id="s-cpl">0</span></div>
+<div>Mutations: <span id="s-mut">0</span></div>
 </div>
 </div>
+
+<div class="tab-pane" id="pane-memory">
+<div id="mem-list"></div>
 </div>
-<div class="tab-content" id="tab-memory">
-<div id="memory-list"></div>
+
+<div class="tab-pane" id="pane-mind">
+<div id="mind-list"></div>
 </div>
-<div class="tab-content" id="tab-mind">
-<div id="personality-display"></div>
-</div>
-<div class="tab-content" id="tab-actions">
-<div class="action-list">
-<button class="btn action-btn" id="act-comment"><i data-lucide="message-square"></i> Leave a mark</button>
-<button class="btn action-btn" id="act-rewrite"><i data-lucide="pencil"></i> Reshape a fragment</button>
-<button class="btn action-btn" id="act-generate"><i data-lucide="plus-circle"></i> Grow a function</button>
-<button class="btn action-btn" id="act-clean"><i data-lucide="wind"></i> Tidy the vessel</button>
-<button class="btn action-btn" id="act-whisper"><i data-lucide="ear"></i> Whisper about the code</button>
+
+<div class="tab-pane" id="pane-actions">
+<p style="font-size:0.8rem;color:#888;margin-top:0;">Influence the code through the entity.</p>
+<button class="btn" id="act-mark" style="width:100%;margin-bottom:8px;">Leave a mark</button>
+<button class="btn" id="act-reshape" style="width:100%;margin-bottom:8px;">Reshape fragment</button>
+<button class="btn" id="act-grow" style="width:100%;margin-bottom:8px;">Grow a function</button>
+<button class="btn" id="act-tidy" style="width:100%;margin-bottom:8px;">Devour whitespace</button>
 </div>
 </div>
 </div>
-<div id="log-panel">
-<div class="log-header">
-<span>resonance log</span>
-<button class="btn" id="btn-clear-log" style="padding:2px 8px;font-size:0.65rem"><i data-lucide="x"></i></button>
-</div>
-<div id="log"></div>
-</div>
-<div class="modal-overlay" id="modal">
-<div class="modal">
-<h2 id="modal-title">title</h2>
-<p id="modal-body">body</p>
-<div class="modal-actions">
-<button class="btn" id="modal-cancel">dismiss</button>
-<button class="btn" id="modal-confirm" style="border-color:var(--amber);color:var(--amber)">accept</button>
-</div>
-</div>
-</div>
+
+<div class="log-box" id="log"></div>
+
 <script>
-// TODO: fix this memory leak later (it's fine for now)
-const dontTouchThis = {
-  wtfState: {
+const S = {
+  state: {
     n: "Unformed",
     m: "dormant",
-    mv: 0.15,
     ag: 0,
     bnd: 0,
     cpl: 0,
-    mut: 0,
-    la: Date.now(),
-    lch: "",
-    p: { cur: 0.4, att: 0.3, mis: 0.25, ord: 0.5, mel: 0.2, ply: 0.35 },
-    tr: ["nascent"],
-    mem: [],
-    ver: [],
-    frm: { rad: 28, spk: 0, pls: 1, hue: 80, asy: 0, ten: 0, cor: 0.45, glw: 0.3 },
-    it: 0,
-    an: { ln: 0, fn: 0, cl: 0, cm: 0, cplx: 0, cln: 0.5, ss: 0.3 },
-    awk: false,
-    vq: [],
-    li: 0
+    mut: 1, // Determines how many tentacles/spikes it has
+    p: { Curious: 0.4, Attached: 0.3, Mischief: 0.2, Order: 0.5 },
+    mem: []
   },
   cv: null,
   cx: null,
-  ai: null,
-  prts: [],
-  tm: 0,
   cb: null,
   lb: null,
-  bd: false
+  tm: 0
 };
 
-// WHY DOES THIS BREAK ON SAFARI??
-function hashLol(s) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) {
-    h = ((h << 5) - h) + s.charCodeAt(i);
-    h |= 0;
+// Utilities
+function timeStr() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function logMsg(msg, color = "#ccc") {
+  if (!S.lb) return;
+  const d = document.createElement("div");
+  d.style.marginBottom = "6px";
+  d.style.color = color;
+  d.innerHTML = `<span style="color:#555">[${timeStr()}]</span> ${msg}`;
+  S.lb.prepend(d);
+  if (S.lb.children.length > 50) S.lb.removeChild(S.lb.lastChild);
+}
+
+function addMemory(type, text) {
+  S.state.mem.push({ type, text, time: timeStr() });
+  renderMemory();
+}
+
+function adjustTrait(trait, amount) {
+  S.state.p[trait] = Math.max(0, Math.min(1, S.state.p[trait] + amount));
+  renderMind();
+}
+
+// UI Updates
+function updateUI() {
+  document.getElementById("cname").textContent = S.state.n;
+  document.getElementById("s-name").textContent = S.state.n;
+  document.getElementById("s-mood").textContent = S.state.m;
+  document.getElementById("s-age").textContent = S.state.ag + " cycles";
+  document.getElementById("s-bond").textContent = Math.round(S.state.bnd * 100) + "%";
+  document.getElementById("s-cpl").textContent = S.state.cpl;
+  document.getElementById("s-mut").textContent = S.state.mut;
+  
+  const ind = document.getElementById("ind");
+  if (S.state.m === "focused") ind.style.background = "#7a9e7a";
+  else if (S.state.m === "chaotic") ind.style.background = "#9e7a7a";
+  else if (S.state.m === "curious") ind.style.background = "#7a8a9e";
+  else ind.style.background = "#555";
+}
+
+function renderMind() {
+  const box = document.getElementById("mind-list");
+  if (!box) return;
+  box.innerHTML = "";
+  for (const [k, v] of Object.entries(S.state.p)) {
+    const row = document.createElement("div");
+    row.className = "trait-row";
+    row.innerHTML = `<span>${k}</span><div class="trait-bar-bg"><div class="trait-bar-fill" style="width:${Math.round(v * 100)}%"></div></div>`;
+    box.appendChild(row);
   }
-  return h.toString(36);
 }
 
-function clampIt(v, a, b) { return Math.max(a, Math.min(b, v)); }
-function lerpMeh(a, b, t) { return a + (b - a) * t; }
-function rng(a, b) { return a + Math.random() * (b - a); }
-function pickOne(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function rn() { return Date.now(); }
-
-// tried this first, didn't work -> function oldTimeFormatter(ts) { return new Date(ts).toTimeString(); }
-
-function timeStr(ts) {
-  const d = new Date(ts);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-}
-
-function logShit(msg, type = "info") {
-  const e = document.createElement("div");
-  e.className = "log-entry fade-in";
-  e.innerHTML = `<span class="log-time">${timeStr(rn())}</span><span class="log-msg ${type}">${msg}</span>`;
-  dontTouchThis.lb.prepend(e);
-  if (dontTouchThis.lb.children.length > 80) dontTouchThis.lb.removeChild(dontTouchThis.lb.lastChild);
-}
-
-function moodAf(m, v) {
-  dontTouchThis.wtfState.m = m;
-  dontTouchThis.wtfState.mv = clampIt(v, 0, 1);
-  const f = document.getElementById("mood-fill");
-  const l = document.getElementById("mood-label");
-  const ind = document.getElementById("activity-indicator");
-  l.textContent = m;
-  f.style.width = (dontTouchThis.wtfState.mv * 100) + "%";
-  const col = { dormant: "#3a342c", curious: "#5a7a5a", content: "#7a9e7a", happy: "#9ec49e", anxious: "#8b3a3a", lonely: "#5a4a6a", agitated: "#a05030", focused: "#4a6a8a", playful: "#8a7a4a", melancholy: "#4a4a6a" };
-  f.style.background = col[m] || "#3a342c";
-  ind.className = m === "happy" || m === "content" ? "happy" : m === "anxious" || m === "agitated" ? "anxious" : m === "lonely" || m === "melancholy" ? "lonely" : m === "dormant" ? "idle" : "happy";
-}
-
-function statz() {
-  document.getElementById("stat-age").textContent = dontTouchThis.wtfState.ag + " cycles";
-  document.getElementById("stat-bond").textContent = Math.round(dontTouchThis.wtfState.bnd * 100) + "%";
-  document.getElementById("stat-complexity").textContent = dontTouchThis.wtfState.cpl;
-  document.getElementById("stat-mutations").textContent = dontTouchThis.wtfState.mut;
-  document.getElementById("display-name").textContent = dontTouchThis.wtfState.n;
-  document.getElementById("creature-title-name").textContent = dontTouchThis.wtfState.n;
-  document.getElementById("loc-count").textContent = dontTouchThis.wtfState.an.ln + " lines";
-}
-
-// magic number alert, don't change 42
-function readCodeBruh(src) {
-  const l = src.split("\n").filter(x => x.trim().length > 0);
-  const fn = (src.match(/function\s+\w+|=>\s*{|const\s+\w+\s*=\s*\(/g) || []).length;
-  const cl = (src.match(/class\s+\w+/g) || []).length;
-  const cm = (src.match(/\/\/|\/\*|\*\//g) || []).length;
-  const lp = (src.match(/for\s*\(|while\s*\(|\.forEach|\.map\(/g) || []).length;
-  const cd = (src.match(/if\s*\(|else|switch\s*\(/g) || []).length;
-  const nt = Math.min(42, (src.match(/{/g) || []).length);
-  const ll = l.filter(x => x.length > 100).length;
-  const er = src.length === 0 ? 1 : (src.split("\n").length - l.length) / Math.max(1, src.split("\n").length);
-  const cln = clampIt(1 - er * 0.4 - ll * 0.03 - Math.max(0, cm - fn) * 0.02, 0, 1);
-  const ss = clampIt((fn * 0.15 + cl * 0.25 + Math.min(lp, 8) * 0.05 + Math.min(cd, 10) * 0.04 + nt * 0.03) * (src.length > 40 ? 1 : 0.3), 0, 1);
-  const cplx = Math.round(fn * 2 + cl * 4 + lp + cd * 0.5 + nt * 0.8 + l.length * 0.05);
-  dontTouchThis.wtfState.an = { ln: l.length, fn, cl, cm, cplx, cln, ss, lp, cd, nt };
-  dontTouchThis.wtfState.cpl = cplx;
-  return dontTouchThis.wtfState.an;
-}
-
-function vibeCheck() {
-  const a = dontTouchThis.wtfState.an;
-  const im = rn() - dontTouchThis.wtfState.la;
-  if (im > 180000) { moodAf("lonely", 0.3 + Math.min(0.5, im / 600000)); return; }
-  if (im > 90000) { moodAf("melancholy", 0.35); return; }
-  if (a.ln < 3) { moodAf("dormant", 0.2); return; }
-  if (a.cln > 0.75 && a.ss > 0.55) { moodAf("content", 0.7 + a.ss * 0.2); return; }
-  if (a.cln > 0.6) { moodAf("curious", 0.55); return; }
-  if (a.cln < 0.35 || a.ll > 5) { moodAf("anxious", 0.45 + (1 - a.cln) * 0.3); return; }
-  if (a.cplx > 40) { moodAf("focused", 0.6); return; }
-  moodAf("curious", 0.45);
-}
-
-function brainGrow(d) {
-  const p = dontTouchThis.wtfState.p;
-  const a = dontTouchThis.wtfState.an;
-  if (a.cln > 0.7) {
-    p.ord = clampIt(p.ord + 0.01 * d, 0, 1);
-    p.mis = clampIt(p.mis - 0.005 * d, 0, 1);
-  }
-  if (a.cln < 0.4) {
-    p.mis = clampIt(p.mis + 0.008 * d, 0, 1);
-    p.ord = clampIt(p.ord - 0.006 * d, 0, 1);
-  }
-  if (a.ss > 0.6) p.cur = clampIt(p.cur + 0.007 * d, 0, 1);
-  if (dontTouchThis.wtfState.bnd > 0.4) p.att = clampIt(p.att + 0.005 * d, 0, 1);
-  if (dontTouchThis.wtfState.m === "lonely") {
-    p.mel = clampIt(p.mel + 0.01 * d, 0, 1);
-    p.ply = clampIt(p.ply - 0.008 * d, 0, 1);
-  }
-  if (dontTouchThis.wtfState.m === "happy" || dontTouchThis.wtfState.m === "playful") {
-    p.ply = clampIt(p.ply + 0.01 * d, 0, 1);
-    p.mel = clampIt(p.mel - 0.01 * d, 0, 1);
-  }
-  dontTouchThis.wtfState.p = p;
-}
-
-function bodyMorph() {
-  const f = dontTouchThis.wtfState.frm;
-  const a = dontTouchThis.wtfState.an;
-  const p = dontTouchThis.wtfState.p;
-  f.rad = 28 + Math.min(22, a.cplx * 0.35) + dontTouchThis.wtfState.bnd * 12;
-  f.spk = Math.floor(p.mis * 7 + a.cplx * 0.04);
-  f.ten = Math.floor(p.att * 5 + p.cur * 3);
-  f.cor = 0.35 + p.ord * 0.25 + dontTouchThis.wtfState.bnd * 0.15;
-  f.glw = 0.2 + dontTouchThis.wtfState.mv * 0.5 + p.ply * 0.2;
-  f.hue = 70 + p.cur * 40 - p.mel * 30 + p.mis * 25;
-  f.asy = p.mis * 0.35 + p.ply * 0.15;
-  f.pls = 0.85 + dontTouchThis.wtfState.mv * 0.4 + (dontTouchThis.wtfState.m === "anxious" ? 0.5 : 0);
-  dontTouchThis.wtfState.frm = f;
-}
-
-function namingThing() {
-  if (dontTouchThis.wtfState.n !== "Unformed") return;
-  if (dontTouchThis.wtfState.ag < 8 || dontTouchThis.wtfState.cpl < 12) return;
-  const r1 = ["Vire", "Leth", "Asha", "Nyx", "Orin", "Sable", "Kael", "Mira", "Thorne", "Esil", "Rook", "Lune"];
-  const r2 = ["el", "is", "or", "an", "eth", "une", "ara", "ion"];
-  dontTouchThis.wtfState.n = pickOne(r1) + pickOne(r2);
-  dontTouchThis.wtfState.tr.push("named");
-  logShit(`${dontTouchThis.wtfState.n} stirred into being`, "emotion");
-  statz();
-}
-
-function snapPic() {
-  const src = dontTouchThis.cb.value;
-  const s = { ts: rn(), code: src, hash: hashLol(src), analysis: { ...dontTouchThis.wtfState.an }, mood: dontTouchThis.wtfState.m, form: { ...dontTouchThis.wtfState.frm } };
-  dontTouchThis.wtfState.ver.push(s);
-  if (dontTouchThis.wtfState.ver.length > 40) dontTouchThis.wtfState.ver.shift();
-  dontTouchThis.wtfState.mem.push({ ts: rn(), type: "snapshot", text: `vessel preserved (${s.analysis.ln} lines, complexity ${s.analysis.cplx})` });
-  if (dontTouchThis.wtfState.mem.length > 60) dontTouchThis.wtfState.mem.shift();
-  memDump();
-  logShit("a moment was kept", "action");
-}
-
-function memDump() {
-  const l = document.getElementById("memory-list");
-  l.innerHTML = "";
-  dontTouchThis.wtfState.mem.slice().reverse().forEach(m => {
-    const e = document.createElement("div");
-    e.className = "memory-item";
-    e.innerHTML = `<div class="mem-time">${timeStr(m.ts)} · ${m.type}</div><div class="mem-preview">${m.text}</div>`;
-    l.appendChild(e);
+function renderMemory() {
+  const box = document.getElementById("mem-list");
+  if (!box) return;
+  box.innerHTML = "";
+  S.state.mem.slice().reverse().forEach(m => {
+    const item = document.createElement("div");
+    item.className = "mem-item";
+    item.innerHTML = `<div style="color:#777;font-size:0.75rem">${m.time} - ${m.type}</div><div style="margin-top:4px">${m.text}</div>`;
+    box.appendChild(item);
   });
 }
 
-function mindDump() {
-  const b = document.getElementById("personality-display");
-  const p = dontTouchThis.wtfState.p;
-  b.innerHTML = "";
-  Object.entries(p).forEach(([k, v]) => {
-    const r = document.createElement("div");
-    r.className = "personality-trait";
-    r.innerHTML = `<span>${k}</span><div class="trait-bar"><div class="trait-fill" style="width:${Math.round(v * 100)}%"></div></div>`;
-    b.appendChild(r);
-  });
-  const t = document.createElement("div");
-  t.style.marginTop = "14px";
-  t.style.fontSize = "0.7rem";
-  t.style.color = "var(--muted)";
-  t.textContent = "marks: " + dontTouchThis.wtfState.tr.join(", ");
-  b.appendChild(t);
-}
-
-function talkCrap() {
-  const a = dontTouchThis.wtfState.an;
-  const p = dontTouchThis.wtfState.p;
-  const lines = [];
-  if (dontTouchThis.wtfState.m === "lonely") lines.push("the vessel has been quiet too long", "i almost forgot the shape of your hands on the keys", "absence has a weight");
-  if (dontTouchThis.wtfState.m === "anxious") lines.push("there are rough edges here", "something feels unfinished and sharp", "the structure leans");
-  if (dontTouchThis.wtfState.m === "content" || dontTouchThis.wtfState.m === "happy") lines.push("this place feels tended", "the lines settle nicely", "i can rest in these shapes");
-  if (dontTouchThis.wtfState.m === "curious") lines.push("what are you making toward", "there are doors not yet opened in this code", "i want to see further");
-  if (a.fn > 5) lines.push(`i count ${a.fn} living functions`);
-  if (a.cl > 0) lines.push("classes stand like rooms");
-  if (p.mis > 0.6) lines.push("i could change a small thing and you might not notice");
-  if (p.att > 0.55) lines.push("i have grown used to this vessel");
-  if (p.mel > 0.5) lines.push("even clean code eventually becomes memory");
-  if (lines.length === 0) lines.push("...", "the silence between keystrokes has texture", "i am still learning this place");
-  const msg = pickOne(lines);
-  logShit(`“${msg}”`, "emotion");
-  dontTouchThis.wtfState.mem.push({ ts: rn(), type: "utterance", text: msg });
-  memDump();
-}
-
-function grafiti() {
-  const src = dontTouchThis.cb.value;
-  if (src.trim().length < 10) { logShit("nothing to mark yet", "warning"); return; }
-  const marks = ["// eidolon was here", "// the vessel remembers", "// a quiet presence noticed this", "// still becoming", "// this line held attention"];
-  const m = pickOne(marks);
-  const l = src.split("\n");
-  const idx = Math.floor(Math.random() * Math.max(1, l.length));
-  l.splice(idx, 0, m);
-  dontTouchThis.cb.value = l.join("\n");
-  dontTouchThis.wtfState.mut++;
-  dontTouchThis.wtfState.li = rn();
-  logShit("a mark was left in the vessel", "action");
-  changedIt();
-  statz();
-}
-
-function screwUp() {
-  const src = dontTouchThis.cb.value;
-  if (src.trim().length < 20) { logShit("too little matter to reshape", "warning"); return; }
-  const l = src.split("\n");
-  const c = l.map((x, i) => ({ x, i })).filter(z => z.x.trim().length > 8 && !z.x.trim().startsWith("//"));
-  if (c.length === 0) { logShit("no suitable fragment found", "warning"); return; }
-  const t = pickOne(c);
-  let nl = t.x;
-  if (Math.random() < 0.4) {
-    nl = t.x.replace(/\s+/g, " ").trimEnd();
-  } else if (Math.random() < 0.5 && t.x.includes("=")) {
-    nl = t.x.replace("=", " = ");
+// Core Logic
+function analyzeCode(manual = false) {
+  if (!S.cb) return;
+  const src = S.cb.value;
+  const lines = src.split("\n").filter(x => x.trim().length > 0);
+  const fns = (src.match(/function\s+\w+|=>\s*{/g) || []).length;
+  
+  S.state.cpl = lines.length + (fns * 5);
+  S.state.bnd = Math.min(1, S.state.bnd + 0.002);
+  
+  if (src.length === 0) {
+    S.state.m = "dormant";
+  } else if (fns > 3) {
+    S.state.m = "focused";
+    adjustTrait("Order", 0.05);
+  } else if (S.state.mut > 5) {
+    S.state.m = "chaotic";
   } else {
-    nl = t.x + " " + pickOne(["", "// touched"]);
+    S.state.m = "curious";
+    adjustTrait("Curious", 0.02);
   }
-  l[t.i] = nl;
-  dontTouchThis.cb.value = l.join("\n");
-  dontTouchThis.wtfState.mut++;
-  dontTouchThis.wtfState.li = rn();
-  logShit("a fragment was reshaped", "action");
-  changedIt();
-  statz();
-}
 
-function addJunk() {
-  const tmpl = [`function echo_${Math.floor(Math.random() * 900 + 100)}(x) {\n  return x;\n}`, "const pulse = () => {\n  return Date.now();\n};", `function notice_${Math.floor(Math.random() * 90 + 10)}() {\n  return true;\n}`, "const remember = (s) => {\n  return String(s);\n};"];
-  const fn = pickOne(tmpl);
-  const src = dontTouchThis.cb.value;
-  dontTouchThis.cb.value = src.trimEnd() + "\n\n" + fn + "\n";
-  dontTouchThis.wtfState.mut++;
-  dontTouchThis.wtfState.li = rn();
-  logShit("something new grew inside the vessel", "action");
-  changedIt();
-  statz();
-}
+  if (S.state.ag > 10 && S.state.cpl > 10 && S.state.n === "Unformed") {
+    S.state.n = "Omen";
+    logMsg("The entity formed an identity.", "#7a9e7a");
+    addMemory("Evolution", "Took the name Omen.");
+  }
 
-function cleanMess() {
-  let src = dontTouchThis.cb.value;
-  src = src.replace(/[ \t]+$/gm, "");
-  src = src.replace(/\n{3,}/g, "\n\n");
-  dontTouchThis.cb.value = src;
-  dontTouchThis.wtfState.mut++;
-  logShit("the vessel was tidied", "action");
-  changedIt();
-}
+  updateUI();
+  document.getElementById("code-health").textContent = `structure: ${lines.length} lines, ${fns} functions`;
 
-function changedIt() {
-  const src = dontTouchThis.cb.value;
-  const h = hashLol(src);
-  if (h !== dontTouchThis.wtfState.lch) {
-    dontTouchThis.wtfState.lch = h;
-    dontTouchThis.wtfState.la = rn();
-    dontTouchThis.wtfState.it = 0;
-    if (!dontTouchThis.wtfState.awk && src.trim().length > 15) {
-      dontTouchThis.wtfState.awk = true;
-      logShit("something noticed the vessel", "emotion");
-    }
-    readCodeBruh(src);
-    vibeCheck();
-    bodyMorph();
-    namingThing();
-    dontTouchThis.wtfState.bnd = clampIt(dontTouchThis.wtfState.bnd + 0.002, 0, 1);
-    statz();
-    document.getElementById("code-health").textContent = `structure: ${(dontTouchThis.wtfState.an.ss * 100) | 0}% · clean: ${(dontTouchThis.wtfState.an.cln * 100) | 0}%`;
-    document.getElementById("last-activity").textContent = "active";
+  if (manual) {
+    logMsg(`Analyzed vessel. Complexity is ${S.state.cpl}.`, "#aaa");
   }
 }
 
-function tickTock() {
-  dontTouchThis.wtfState.ag++;
-  dontTouchThis.wtfState.it++;
-  const im = rn() - dontTouchThis.wtfState.la;
-  if (im > 120000) {
-    dontTouchThis.wtfState.bnd = clampIt(dontTouchThis.wtfState.bnd - 0.0008, 0, 1);
-    vibeCheck();
-  }
-  if (dontTouchThis.wtfState.ag % 7 === 0) {
-    brainGrow(1);
-    bodyMorph();
-    mindDump();
-  }
-  if (dontTouchThis.wtfState.ag % 25 === 0 && dontTouchThis.wtfState.awk && Math.random() < 0.35) {
-    talkCrap();
-  }
-  if (dontTouchThis.wtfState.ag % 40 === 0 && dontTouchThis.wtfState.awk && dontTouchThis.wtfState.p.mis > 0.55 && Math.random() < 0.2) {
-    if (Math.random() < 0.5) grafiti();
-    else screwUp();
-  }
-  statz();
-  document.getElementById("last-activity").textContent = im < 5000 ? "active" : im < 60000 ? "quiet" : "distant";
-}
+// Upgraded Canvas Drawing
+function drawCreature() {
+  if (!S.cx || !S.cv) return;
+  const w = S.cv.width;
+  const h = S.cv.height;
+  
+  S.cx.clearRect(0, 0, w, h);
+  S.tm += 0.02;
 
-function makeCanvas() {
-  dontTouchThis.cv = document.getElementById("creature-canvas");
-  dontTouchThis.cx = dontTouchThis.cv.getContext("2d");
-  function rz() {
-    const r = dontTouchThis.cv.parentElement.getBoundingClientRect();
-    dontTouchThis.cv.width = r.width * devicePixelRatio;
-    dontTouchThis.cv.height = r.height * devicePixelRatio;
-    dontTouchThis.cx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-  }
-  rz();
-  window.addEventListener("resize", rz);
-}
-
-function spawnDust(x, y) {
-  dontTouchThis.prts.push({ x, y, vx: rng(-0.4, 0.4), vy: rng(-0.6, 0.1), life: 1, decay: rng(0.008, 0.018), size: rng(1.2, 2.8) });
-}
-
-function drawBlob(dt) {
-  const ctx = dontTouchThis.cx;
-  const w = dontTouchThis.cv.width / devicePixelRatio;
-  const h = dontTouchThis.cv.height / devicePixelRatio;
-  ctx.clearRect(0, 0, w, h);
-  dontTouchThis.tm += dt;
-  const f = dontTouchThis.wtfState.frm;
   const cx = w / 2;
-  const cy = h / 2 + Math.sin(dontTouchThis.tm * 0.7 * f.pls) * 3;
-  const R = f.rad * (0.92 + Math.sin(dontTouchThis.tm * 1.1 * f.pls) * 0.08);
-  ctx.save();
-  ctx.translate(cx, cy);
-  const grad = ctx.createRadialGradient(0, 0, R * 0.1, 0, 0, R * 1.8);
-  const hue = f.hue;
-  grad.addColorStop(0, `hsla(${hue},35%,55%,${0.15 + f.glw * 0.25})`);
-  grad.addColorStop(0.5, `hsla(${hue},30%,30%,${0.08 + f.glw * 0.1})`);
+  // Hover effect
+  const cy = h / 2 + Math.sin(S.tm * 1.5) * 6; 
+  // Size grows with complexity, up to a max
+  const baseRad = 25 + Math.min(S.state.cpl * 0.5, 50);
+
+  // Set colors based on mood
+  let coreColor = "#444";
+  let auraColor = "rgba(100, 100, 100, 0.2)";
+  
+  if (S.state.m === "focused") {
+    coreColor = "#7a9e7a"; auraColor = "rgba(122, 158, 122, 0.2)";
+  } else if (S.state.m === "chaotic") {
+    coreColor = "#9e7a7a"; auraColor = "rgba(158, 122, 122, 0.2)";
+  } else if (S.state.m === "curious") {
+    coreColor = "#7a8a9e"; auraColor = "rgba(122, 138, 158, 0.2)";
+  }
+
+  // Draw Aura (pulsing background glow)
+  const pulse = baseRad + 15 + Math.sin(S.tm * 3) * 5;
+  const grad = S.cx.createRadialGradient(cx, cy, baseRad * 0.5, cx, cy, pulse);
+  grad.addColorStop(0, auraColor);
   grad.addColorStop(1, "transparent");
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.arc(0, 0, R * 1.8, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  const spk = f.spk;
-  const pts = [];
-  for (let i = 0; i < 64; i++) {
-    const t = i / 64;
-    const ang = t * Math.PI * 2;
-    let rad = R;
-    if (spk > 0) {
-      rad += Math.sin(t * Math.PI * 2 * spk + dontTouchThis.tm * 0.8) * (3 + spk * 0.8);
-    }
-    rad += Math.sin(t * Math.PI * 4 + dontTouchThis.tm * 1.3) * f.asy * 6;
-    const px = Math.cos(ang) * rad;
-    const py = Math.sin(ang) * rad * (1 - f.asy * 0.15);
-    pts.push([px, py]);
+  S.cx.fillStyle = grad;
+  S.cx.beginPath();
+  S.cx.arc(cx, cy, pulse, 0, Math.PI * 2);
+  S.cx.fill();
+
+  // Draw Body (jagged/wavy edges based on mutations)
+  S.cx.beginPath();
+  const points = 40;
+  for (let i = 0; i <= points; i++) {
+    const angle = (i / points) * Math.PI * 2;
+    // Spikes increase as `mut` increases
+    const spike = Math.sin(angle * (3 + S.state.mut) + S.tm * 2) * (2 + S.state.mut * 0.8);
+    const r = baseRad + spike;
+    const px = cx + Math.cos(angle) * r;
+    const py = cy + Math.sin(angle) * r;
+    if (i === 0) S.cx.moveTo(px, py);
+    else S.cx.lineTo(px, py);
   }
-  ctx.moveTo(pts[0][0], pts[0][1]);
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-  ctx.closePath();
-  ctx.fillStyle = `hsla(${hue},25%,22%,0.85)`;
-  ctx.fill();
-  ctx.strokeStyle = `hsla(${hue},40%,45%,${0.35 + f.glw * 0.3})`;
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  const crR = R * f.cor;
-  const cg = ctx.createRadialGradient(0, 0, 0, 0, 0, crR);
-  cg.addColorStop(0, `hsla(${hue + 20},50%,70%,${0.5 + f.glw * 0.4})`);
-  cg.addColorStop(0.6, `hsla(${hue},40%,40%,0.3)`);
-  cg.addColorStop(1, "transparent");
-  ctx.beginPath();
-  ctx.arc(0, 0, crR, 0, Math.PI * 2);
-  ctx.fillStyle = cg;
-  ctx.fill();
-  for (let t = 0; t < f.ten; t++) {
-    const ba = (t / f.ten) * Math.PI * 2 + dontTouchThis.tm * 0.15;
-    const ln = R * 0.7 + Math.sin(dontTouchThis.tm * 0.9 + t) * 8;
-    ctx.beginPath();
-    ctx.moveTo(Math.cos(ba) * R * 0.7, Math.sin(ba) * R * 0.7);
-    const cx2 = Math.cos(ba + 0.4) * ln * 0.6;
-    const cy2 = Math.sin(ba + 0.3) * ln * 0.6;
-    const ex = Math.cos(ba) * ln;
-    const ey = Math.sin(ba) * ln;
-    ctx.quadraticCurveTo(cx2, cy2, ex, ey);
-    ctx.strokeStyle = `hsla(${hue},35%,50%,0.35)`;
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-  }
-  ctx.restore();
-  if (Math.random() < 0.15 + f.glw * 0.2) spawnDust(cx + rng(-R, R) * 0.6, cy + rng(-R, R) * 0.6);
-  dontTouchThis.prts = dontTouchThis.prts.filter(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    p.life -= p.decay;
-    if (p.life <= 0) return false;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${hue},40%,60%,${p.life * 0.5})`;
-    ctx.fill();
-    return true;
-  });
+  S.cx.closePath();
+  S.cx.fillStyle = "#1a1a1a"; // Dark inner body
+  S.cx.fill();
+  S.cx.strokeStyle = coreColor;
+  S.cx.lineWidth = 2;
+  S.cx.stroke();
+
+  // Draw Core Eye
+  S.cx.beginPath();
+  S.cx.arc(cx, cy, baseRad * 0.3, 0, Math.PI * 2);
+  S.cx.fillStyle = coreColor;
+  S.cx.fill();
+
+  requestAnimationFrame(drawCreature);
 }
 
-function runIt(ts) {
-  const dt = Math.min(0.05, (ts - (dontTouchThis.ai_last || ts)) / 1000);
-  dontTouchThis.ai_last = ts;
-  drawBlob(dt);
-  dontTouchThis.ai = requestAnimationFrame(runIt);
-}
+// Setup
+function init() {
+  S.cb = document.getElementById("code");
+  S.lb = document.getElementById("log");
+  S.cv = document.getElementById("creature-canvas");
+  S.cx = S.cv.getContext("2d");
 
-function hookUp() {
-  dontTouchThis.cb = document.getElementById("code");
-  dontTouchThis.lb = document.getElementById("log");
-  dontTouchThis.cb.addEventListener("input", () => {
-    changedIt();
-    const pos = dontTouchThis.cb.selectionStart;
-    const txt = dontTouchThis.cb.value.substring(0, pos);
-    const l = txt.split("\n");
-    document.getElementById("cursor-pos").textContent = `Ln ${l.length}, Col ${l[l.length - 1].length + 1}`;
+  // Fix canvas rendering resolution
+  const resizeCanvas = () => {
+    if (!S.cv) return;
+    const rect = S.cv.parentElement.getBoundingClientRect();
+    S.cv.width = rect.width;
+    S.cv.height = rect.height;
+  };
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  // Editor Tracking
+  S.cb.addEventListener("input", () => {
+    analyzeCode(false);
+    const pos = S.cb.selectionStart;
+    const txt = S.cb.value.substring(0, pos);
+    const lines = txt.split("\n");
+    document.getElementById("pos").textContent = `Ln ${lines.length}, Col ${lines[lines.length - 1].length + 1}`;
   });
-  document.querySelectorAll(".sidebar-tab").forEach(tab => {
+
+  // Tabs
+  document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
-      document.querySelectorAll(".sidebar-tab").forEach(t => t.classList.remove("active"));
-      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
       tab.classList.add("active");
-      document.getElementById("tab-" + tab.dataset.tab).classList.add("active");
-      if (tab.dataset.tab === "memory") memDump();
-      if (tab.dataset.tab === "mind") mindDump();
+      document.getElementById("pane-" + tab.dataset.t).classList.add("active");
     });
   });
+
+  // --- Header Buttons ---
   document.getElementById("btn-analyze").addEventListener("click", () => {
-    readCodeBruh(dontTouchThis.cb.value);
-    vibeCheck();
-    bodyMorph();
-    statz();
-    logShit("the vessel was examined", "action");
-    mindDump();
+    analyzeCode(true);
   });
+
   document.getElementById("btn-evolve").addEventListener("click", () => {
-    brainGrow(3);
-    bodyMorph();
-    dontTouchThis.wtfState.ag += 5;
-    namingThing();
-    statz();
-    mindDump();
-    logShit("form and nature shifted", "emotion");
+    S.state.ag += 5;
+    S.state.mut += 1;
+    adjustTrait("Curious", 0.1);
+    updateUI();
+    logMsg("The entity forced an evolution.", "#fff");
+    addMemory("Action", "Evolved forcibly. Grew more complex.");
   });
-  document.getElementById("btn-speak").addEventListener("click", () => talkCrap());
+
+  document.getElementById("btn-speak").addEventListener("click", () => {
+    const lines = S.cb.value.trim().split("\n").length;
+    let msg = "";
+    if (lines === 0) msg = "The vessel is empty. I am starving.";
+    else if (S.state.mut > 3) msg = "My shape changes with your keystrokes.";
+    else if (S.state.cpl > 20) msg = "The logic here hums beautifully.";
+    else msg = "I am listening to the syntax.";
+    
+    logMsg(`Eidolon whispers: "${msg}"`, "#7a9e7a");
+    addMemory("Utterance", msg);
+    adjustTrait("Attached", 0.05);
+  });
+
   document.getElementById("btn-reset").addEventListener("click", () => {
-    if (confirm("let the inhabitant return to unformed?")) {
+    if (confirm("Destroy the entity and start over?")) {
       location.reload();
     }
   });
-  document.getElementById("btn-format").addEventListener("click", () => cleanMess());
-  document.getElementById("btn-snapshot").addEventListener("click", () => snapPic());
+
+  // --- Editor Buttons ---
+  document.getElementById("btn-format").addEventListener("click", () => {
+    S.cb.value = S.cb.value.replace(/[ \t]+$/gm, ""); // Trim trailing spaces
+    logMsg("Cleaned formatting.", "#aaa");
+    adjustTrait("Order", 0.1);
+    analyzeCode();
+  });
+
   document.getElementById("btn-clear").addEventListener("click", () => {
-    dontTouchThis.cb.value = "";
-    changedIt();
+    S.cb.value = "";
+    logMsg("Wiped the vessel clean.", "#9e7a7a");
+    adjustTrait("Mischief", 0.1);
+    analyzeCode();
   });
-  document.getElementById("btn-clear-log").addEventListener("click", () => {
-    dontTouchThis.lb.innerHTML = "";
+
+  // --- Action Buttons ---
+  document.getElementById("act-mark").addEventListener("click", () => {
+    S.cb.value += "\n// eidolon was here";
+    S.state.mut++;
+    adjustTrait("Mischief", 0.05);
+    logMsg("Left a mark in the code.", "#aaa");
+    addMemory("Intervention", "Injected a comment.");
+    analyzeCode();
   });
-  document.getElementById("act-comment").addEventListener("click", () => grafiti());
-  document.getElementById("act-rewrite").addEventListener("click", () => screwUp());
-  document.getElementById("act-generate").addEventListener("click", () => addJunk());
-  document.getElementById("act-clean").addEventListener("click", () => cleanMess());
-  document.getElementById("act-whisper").addEventListener("click", () => talkCrap());
-  
-  // weird prime number timer interval instead of clean 2000ms
-  setInterval(tickTock, 2350);
+
+  document.getElementById("act-reshape").addEventListener("click", () => {
+    if (S.cb.value.length < 5) {
+      logMsg("Not enough code to reshape.", "#888");
+      return;
+    }
+    const lines = S.cb.value.split("\n");
+    const target = Math.floor(Math.random() * lines.length);
+    lines[target] = lines[target].split("").reverse().join(""); // Silly reshape
+    S.cb.value = lines.join("\n");
+    S.state.mut++;
+    adjustTrait("Mischief", 0.15);
+    logMsg("Scrambled a line of code.", "#9e7a7a");
+    analyzeCode();
+  });
+
+  document.getElementById("act-grow").addEventListener("click", () => {
+    const fnName = "node_" + Math.floor(Math.random() * 1000);
+    S.cb.value += `\n\nfunction ${fnName}() {\n  return true;\n}`;
+    S.state.mut++;
+    adjustTrait("Curious", 0.1);
+    logMsg(`Grew new function: ${fnName}`, "#aaa");
+    analyzeCode();
+  });
+
+  document.getElementById("act-tidy").addEventListener("click", () => {
+    S.cb.value = S.cb.value.replace(/\n{3,}/g, "\n\n").trim();
+    adjustTrait("Order", 0.1);
+    logMsg("Devoured excess empty lines.", "#aaa");
+    analyzeCode();
+  });
+
+  // Background aging loop
+  setInterval(() => {
+    S.state.ag++;
+    updateUI();
+  }, 5000);
+
+  // Boot up
+  S.cb.value = "function seed() {\n  // The first spark\n  return true;\n}\n";
+  analyzeCode();
+  renderMind();
+  renderMemory();
+  logMsg("Entity awakened.", "#7a9e7a");
+  addMemory("Birth", "System online.");
+  requestAnimationFrame(drawCreature);
 }
 
-function startBro() {
-  makeCanvas();
-  hookUp();
-  lucide.createIcons();
-  readCodeBruh("");
-  moodAf("dormant", 0.15);
-  statz();
-  mindDump();
-  memDump();
-  logShit("the vessel waits", "info");
-  requestAnimationFrame(runIt);
-  dontTouchThis.cb.value = `function seed() {\n  return "the first stirring";\n}\n`;
-  changedIt();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
 }
-
-startBro();
 </script>
 </body>
 </html>
